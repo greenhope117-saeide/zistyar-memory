@@ -3,37 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>زیست‌یار - بازی حافظه</title>
+<title>زیست‌یار - همزیستی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-body{font-family:tahoma,sans-serif;margin:0;background:linear-gradient(135deg,#0b2447,#159895);color:#fff}
-.container{max-width:1000px;margin:auto;padding:20px}
+body{margin:0;font-family:Vazirmatn,sans-serif;background:linear-gradient(135deg,#0b1f3a,#0f766e);color:#fff}
+.container{max-width:1100px;margin:auto;padding:20px}
 h1,h2{text-align:center}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
-.card{height:100px;cursor:pointer;position:relative;transform-style:preserve-3d;transition:.5s}
-.card.flip{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:12px;padding:8px;backface-visibility:hidden;text-align:center}
-.front{background:#ffffff22;border:2px solid #fff}
-.back{background:#fff;color:#111;transform:rotateY(180deg)}
-.done .back{background:#9ef0a8}
-#finish{display:none;text-align:center;padding:30px}
-button{padding:10px 20px;border:none;border-radius:10px}
+.section{background:#ffffff12;border-radius:20px;padding:15px;margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.card,.rel{padding:16px;border-radius:16px;text-align:center;cursor:pointer;transition:.25s}
+.card{background:#fff;color:#111}
+.rel{background:#0ea5e9}
+.selected{outline:4px solid gold}
+.correct{background:#22c55e!important;color:#fff!important}
+.wrong{background:#ef4444!important;color:#fff!important}
+.score{text-align:center;font-size:22px}
+#win{display:none;background:#fff;color:#111;padding:20px;border-radius:20px;text-align:center}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>🧬 زیست‌یار - بازی حافظه</h1>
-<h2>طراح: خانم معصومه مرتجایی</h2>
-<p style="text-align:center">کارت رابطه و کارت موجود زنده متناظر را پیدا کنید.</p>
-<div style="text-align:center">امتیاز: <span id="score">0</span>/10</div><br>
-<div id="game" class="grid"></div>
-<div id="finish">
-<h1>🎉 آفرین!</h1>
-<div id="medal" style="font-size:80px">🥇</div>
-<p>شما بازی را کامل کردید.</p>
+<h1>🧬 زیست‌یار</h1>
+<h2>✨ طراح: خانم معصومه مرتجایی</h2>
+
+<div class="score">⭐ امتیاز: <span id="score">0</span> / 10</div>
+
+<div class="section">
+<h3>موجودات</h3>
+<div id="items" class="grid"></div>
+</div>
+
+<div class="section">
+<h3>نوع رابطه</h3>
+<div id="relations" class="grid"></div>
+</div>
+
+<div id="win">
+<h1>🏆 تبریک!</h1>
+<p>🌟 شرکت‌کننده عزیز، همه روابط همزیستی را درست شناسایی کردید.</p>
 </div>
 </div>
+
 <script>
-const pairs=[
+const data=[
 ["مورچه و شته","همیاری"],
 ["زنبور و گل","همیاری"],
 ["میگوی تمیزکننده و کوسه","همیاری"],
@@ -45,45 +57,68 @@ const pairs=[
 ["کرمک و انسان","انگلی"],
 ["کنه و گاو","انگلی"]
 ];
-let cards=[];
-pairs.forEach((p,i)=>{
- cards.push({id:i,text:p[0],pair:i});
- cards.push({id:i+100,text:p[1],pair:i});
-});
-cards.sort(()=>Math.random()-0.5);
 
-const game=document.getElementById("game");
-let first=null,lock=false,score=0;
+const relations=["همیاری","همسفرگی","انگلی"];
 
-cards.forEach(c=>{
- let d=document.createElement("div");
- d.className="card";
- d.dataset.pair=c.pair;
- d.innerHTML=`<div class="face front">🧬</div><div class="face back">${c.text}</div>`;
- d.onclick=()=>{
-  if(lock||d.classList.contains("done")||d===first)return;
-  d.classList.add("flip");
-  if(!first){first=d;return;}
-  lock=true;
-  if(first.dataset.pair===d.dataset.pair){
-    first.classList.add("done");
-    d.classList.add("done");
-    score++;
-    document.getElementById("score").textContent=score;
-    first=null;lock=false;
-    if(score===10){
-      document.getElementById("finish").style.display="block";
-    }
-  }else{
-    setTimeout(()=>{
-      first.classList.remove("flip");
-      d.classList.remove("flip");
-      first=null;lock=false;
-    },900);
-  }
+let selectedItem=null;
+let selectedRelation=null;
+let score=0;
+
+const itemsBox=document.getElementById("items");
+const relBox=document.getElementById("relations");
+
+data.forEach(d=>{
+ let el=document.createElement("div");
+ el.className="card";
+ el.textContent=d[0];
+ el.dataset.answer=d[1];
+
+ el.onclick=()=>{
+   if(el.classList.contains("correct")) return;
+   document.querySelectorAll(".card").forEach(x=>x.classList.remove("selected"));
+   el.classList.add("selected");
+   selectedItem=el;
+   check();
  };
- game.appendChild(d);
+ itemsBox.appendChild(el);
 });
+
+relations.forEach(r=>{
+ let el=document.createElement("div");
+ el.className="rel";
+ el.textContent=r;
+
+ el.onclick=()=>{
+   document.querySelectorAll(".rel").forEach(x=>x.classList.remove("selected"));
+   el.classList.add("selected");
+   selectedRelation=el;
+   check();
+ };
+ relBox.appendChild(el);
+});
+
+function check(){
+ if(!selectedItem || !selectedRelation) return;
+
+ if(selectedItem.dataset.answer===selectedRelation.textContent){
+   selectedItem.classList.remove("selected");
+   selectedItem.classList.add("correct");
+   score++;
+   document.getElementById("score").textContent=score;
+
+   if(score===10){
+     document.getElementById("win").style.display="block";
+   }
+ }else{
+   selectedItem.classList.add("wrong");
+   setTimeout(()=>selectedItem.classList.remove("wrong"),700);
+ }
+
+ selectedItem=null;
+ document.querySelectorAll(".card").forEach(x=>x.classList.remove("selected"));
+ document.querySelectorAll(".rel").forEach(x=>x.classList.remove("selected"));
+ selectedRelation=null;
+}
 </script>
 </body>
 </html>
