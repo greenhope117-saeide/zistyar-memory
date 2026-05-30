@@ -25,7 +25,9 @@ h1,h2{text-align:center}
 <div class="container">
 <h1>🧬 زیست‌یار</h1>
 <h2>✨ طراح: خانم معصومه مرتجایی</h2>
-
+<div style="text-align:center;background:#ffffff15;padding:12px;border-radius:12px;margin:15px 0;font-size:18px">
+🌟 شرکت‌کننده گرامی، نوع رابطه همزیستی موجودات زیر را مشخص کنید.
+</div>
 <div class="score">⭐ امتیاز: <span id="score">0</span> / 10</div>
 
 <div class="section">
@@ -96,23 +98,56 @@ relations.forEach(r=>{
  };
  relBox.appendChild(el);
 });
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
 
+  speechSynthesis.cancel();
+
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "fa-IR";
+  msg.rate = 0.9;
+  msg.pitch = 1;
+  speechSynthesis.speak(msg);
+}
+
+function praise(){
+  const words = [
+    "آفرین",
+    "احسنت",
+    "عالی بود",
+    "درست است",
+    "بسیار خوب"
+  ];
+
+  const randomWord =
+    words[Math.floor(Math.random()*words.length)];
+
+  speak(randomWord);
+}
 function check(){
  if(!selectedItem || !selectedRelation) return;
 
  if(selectedItem.dataset.answer===selectedRelation.textContent){
    selectedItem.classList.remove("selected");
    selectedItem.classList.add("correct");
+
+   praise();
+
    score++;
    document.getElementById("score").textContent=score;
-
    if(score===10){
      document.getElementById("win").style.display="block";
    }
  }else{
+
+   speak("دوباره تلاش کن");
+
    selectedItem.classList.add("wrong");
-   setTimeout(()=>selectedItem.classList.remove("wrong"),700);
- }
+
+   setTimeout(()=>{
+      selectedItem.classList.remove("wrong");
+   },700);
+}
 
  selectedItem=null;
  document.querySelectorAll(".card").forEach(x=>x.classList.remove("selected"));
