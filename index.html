@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>زیست‌یار | بازی همزیستی</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
 * {
   margin: 0;
@@ -22,53 +21,16 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
-  position: relative;
-  overflow-x: hidden;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 120px;
-  background: repeating-linear-gradient(transparent 0px, transparent 98px, rgba(255,255,255,0.08) 98px, rgba(255,255,255,0.08) 100px);
-  animation: waveMove 8s linear infinite;
-  pointer-events: none;
-  z-index: 0;
-}
-
-@keyframes waveMove {
-  0% { background-position: 0 0; }
-  100% { background-position: 100% 0; }
 }
 
 .card {
   width: 100%;
-  max-width: 950px;
-  background: rgba(255,255,255,0.98);
-  backdrop-filter: blur(5px);
+  max-width: 900px;
+  background: white;
   border-radius: 40px;
   padding: 35px;
   box-shadow: 0 25px 55px rgba(0,0,0,0.3);
   text-align: center;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255,255,255,0.3);
-  animation: cardEnter 0.5s ease-out;
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes cardEnter {
-  0% {
-    opacity: 0;
-    transform: scale(0.9) translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
 }
 
 .hidden {
@@ -76,31 +38,26 @@ body::before {
 }
 
 h1 {
-  margin-bottom: 15px;
   font-size: 2.2rem;
   font-weight: 900;
+  margin-bottom: 15px;
   background: linear-gradient(135deg, #0b1f3a, #0f766e);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
 }
 
 h2 {
-  margin-bottom: 10px;
   font-size: 1.2rem;
   font-weight: 600;
   color: #0f766e;
+  margin-bottom: 10px;
 }
 
 .sampad-logo {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   margin-bottom: 20px;
 }
 
@@ -108,21 +65,13 @@ h2 {
   width: 110px;
   height: 110px;
   border-radius: 50%;
+  background: linear-gradient(135deg, #1e3a5f, #0f766e);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 15px;
-  transition: transform 0.3s;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
   overflow: hidden;
-  background: linear-gradient(135deg, #1e3a5f, #0f766e);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-  animation: glowPulse 2s infinite;
-}
-
-@keyframes glowPulse {
-  0% { box-shadow: 0 0 0 0 rgba(255,215,0,0.4); }
-  70% { box-shadow: 0 0 0 15px rgba(255,215,0,0); }
-  100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); }
 }
 
 .sampad-icon img {
@@ -131,19 +80,14 @@ h2 {
   object-fit: cover;
 }
 
-.sampad-icon:hover {
-  transform: scale(1.05);
-}
-
 .school-name {
   font-size: 1.2rem;
   font-weight: 800;
   color: #1e3a5f;
-  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-  padding: 12px 28px;
-  border-radius: 60px;
+  background: #e0f2fe;
+  padding: 10px 25px;
+  border-radius: 50px;
   display: inline-block;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
 .btn {
@@ -155,63 +99,26 @@ h2 {
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  transition: all 0.2s ease;
   background: linear-gradient(135deg, #0ea5e9, #0284c7);
   color: white;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.btn:active::before {
-  width: 300px;
-  height: 300px;
+  transition: 0.2s;
 }
 
 .btn:active {
   transform: scale(0.97);
 }
 
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.3);
-}
-
 .option {
   background: linear-gradient(135deg, #0ea5e9, #0284c7);
-  position: relative;
-  transition: all 0.2s;
-}
-
-.option:hover {
-  background: linear-gradient(135deg, #0284c7, #0369a1);
-  box-shadow: 0 0 15px rgba(14,165,233,0.5);
 }
 
 .correct-effect {
   background: linear-gradient(135deg, #22c55e, #16a34a) !important;
-  box-shadow: 0 0 0 4px #bbf7d0, 0 0 20px #22c55e !important;
-  transition: 0.1s;
 }
 
 .wrong-effect {
   background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-  box-shadow: 0 0 0 4px #fecaca, 0 0 20px #ef4444 !important;
   animation: shake 0.3s ease-in-out 0s 2;
-  transition: 0.1s;
 }
 
 @keyframes shake {
@@ -221,253 +128,119 @@ h2 {
 }
 
 .message {
-  font-size: 26px;
+  font-size: 1.5rem;
   font-weight: 800;
   margin: 20px 0;
-  min-height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  background: #f8fafc;
-  border-radius: 60px;
+  min-height: 80px;
   padding: 15px;
-  font-weight: 700;
-  transition: all 0.3s;
-}
-
-.progress-container {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.progress-text {
-  font-size: 1rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
-  padding: 8px 20px;
-  border-radius: 40px;
-  color: #0f172a;
-}
-
-.progress-bar-wrapper {
-  flex: 1;
-  height: 12px;
-  background: #e2e8f0;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #0ea5e9, #22c55e);
-  width: 0%;
-  border-radius: 20px;
-  transition: width 0.5s ease;
+  border-radius: 60px;
+  background: #f8fafc;
 }
 
 .question {
   font-size: 2rem;
   font-weight: 800;
   margin: 25px 0;
-  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-  padding: 30px;
+  background: #f1f5f9;
+  padding: 25px;
   border-radius: 50px;
   line-height: 1.5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  box-shadow: inset 0 1px 4px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.1);
-  letter-spacing: 1px;
+}
+
+.progress {
+  display: inline-block;
+  background: #e2e8f0;
+  padding: 8px 20px;
+  border-radius: 40px;
+  font-weight: 700;
+  margin-bottom: 15px;
 }
 
 .medal {
-  font-size: 100px;
+  font-size: 90px;
   margin-bottom: 20px;
-  animation: medalSpin 0.8s ease-out, bounce 0.6s ease;
-  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.2));
 }
 
-@keyframes medalSpin {
-  0% { transform: rotate(-180deg) scale(0); opacity: 0; }
-  100% { transform: rotate(0deg) scale(1); opacity: 1; }
+.score-box {
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: #f1f5f9;
+  padding: 12px;
+  border-radius: 50px;
+  margin-top: 15px;
 }
 
-.dna-bg {
-  font-size: 85px;
-  opacity: 0.1;
-  position: fixed;
-  animation: floatSlow 10s infinite alternate;
-  pointer-events: none;
-}
-
-.dna1 {
-  top: 10%;
-  left: 3%;
-}
-
-.dna2 {
-  bottom: 10%;
-  right: 3%;
-}
-
-@keyframes floatSlow {
-  0% { transform: translateY(0px) rotate(0deg); }
-  100% { transform: translateY(-50px) rotate(8deg); }
-}
-
-@keyframes bounce {
-  0% { transform: scale(0.7); opacity: 0; }
-  70% { transform: scale(1.2); }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.confetti {
-  position: fixed;
-  width: 12px;
-  height: 12px;
-  position: absolute;
-  animation: fall 2.2s linear forwards;
-  z-index: 999;
-  pointer-events: none;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(100vh) rotate(400deg);
-    opacity: 0;
-  }
-}
-
-.countdown {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 5rem;
-  font-weight: 900;
-  color: white;
-  background: rgba(0,0,0,0.7);
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: countdownPulse 0.8s ease-out;
-  pointer-events: none;
-}
-
-@keyframes countdownPulse {
-  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+.score-box span {
+  color: #0f766e;
+  font-size: 1.8rem;
 }
 
 @media (max-width: 700px) {
+  .card {
+    padding: 20px;
+  }
   .question {
     font-size: 1.3rem;
-    padding: 20px;
+    padding: 18px;
   }
   .btn {
     font-size: 1.1rem;
     padding: 14px;
   }
   .message {
-    font-size: 1rem;
-  }
-  .card {
-    padding: 20px;
+    font-size: 1.1rem;
   }
   .sampad-icon {
     width: 80px;
     height: 80px;
   }
   .school-name {
-    font-size: 0.85rem;
-  }
-  .progress-container {
-    flex-direction: column;
-  }
-  .countdown {
-    font-size: 3rem;
-    width: 70px;
-    height: 70px;
+    font-size: 0.9rem;
   }
 }
 </style>
 </head>
 <body>
 
-<div class="dna-bg dna1">🧬</div>
-<div class="dna-bg dna2">🧬</div>
-
+<!-- صفحه شروع -->
 <div id="startPage" class="card">
   <div class="sampad-logo">
     <div class="sampad-icon">
-      <img src="sampad-logo.png.jpg" alt="سمپاد" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\"width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:3rem;\">🎓</div>'">
+      <img src="sampad-logo.jpg" alt="سمپاد" onerror="this.parentElement.innerHTML='<div style=\"width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;\">🎓</div>'">
     </div>
     <div class="school-name">🏫 مدرسه فرزانگان ۱ شهریار</div>
   </div>
-  
   <h1>🧬 زیست‌یار</h1>
   <h2>✨ طراح: خانم معصومه مرتجایی</h2>
   <br>
-  <p style="font-size:1.2rem; font-weight:500; color:#334155;">
-    🌿 شرکت‌کننده گرامی
-    <br><br>
-    نوع رابطه همزیستی موجودات زیر را مشخص کنید.
-  </p>
+  <p style="font-size:1.2rem;">شرکت‌کننده گرامی<br><br>نوع رابطه همزیستی موجودات زیر را مشخص کنید.</p>
   <br><br>
-  <button class="btn" id="startBtn">
-    <i class="fas fa-play"></i> شروع بازی
-  </button>
+  <button class="btn" id="startBtn">🎮 شروع بازی</button>
 </div>
 
+<!-- صفحه بازی -->
 <div id="gamePage" class="card hidden">
-  <div class="progress-container">
-    <div class="progress-text">📖 سؤال <span id="current">1</span> از <span id="total">10</span></div>
-    <div class="progress-bar-wrapper">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-  </div>
+  <div class="progress">📖 سؤال <span id="current">1</span> از <span id="total">10</span></div>
   <div id="msg" class="message"></div>
   <div id="question" class="question"></div>
-  <button class="btn option" data-choice="همیاری">
-    <i class="fas fa-handshake"></i> 🤝 همیاری
-  </button>
-  <button class="btn option" data-choice="همسفرگی">
-    <i class="fas fa-fish"></i> 🍽️ همسفرگی
-  </button>
-  <button class="btn option" data-choice="انگلی">
-    <i class="fas fa-bug"></i> 🪱 انگلی
-  </button>
-  <br><br>
-  <div style="font-size:1.3rem; font-weight:800; background:#f1f5f9; padding:12px; border-radius:50px;">
-    ⭐ امتیاز: <span id="score" style="color:#0f766e; font-size:1.8rem;">0</span>
-  </div>
+  <button class="btn option" id="btn1" data-choice="همیاری">🤝 همیاری</button>
+  <button class="btn option" id="btn2" data-choice="همسفرگی">🍽️ همسفرگی</button>
+  <button class="btn option" id="btn3" data-choice="انگلی">🪱 انگلی</button>
+  <div class="score-box">⭐ امتیاز: <span id="score">0</span></div>
 </div>
 
+<!-- صفحه پایان -->
 <div id="finishPage" class="card hidden">
   <div id="medal" class="medal">🥇</div>
   <h1>🎉 پایان بازی</h1>
   <br>
-  <p id="resultText" style="font-size:1.3rem; font-weight:500; line-height:2;"></p>
+  <p id="resultText" style="font-size:1.3rem;"></p>
   <br>
-  <button class="btn" id="restartBtn">
-    <i class="fas fa-redo-alt"></i> بازی دوباره
-  </button>
+  <button class="btn" id="restartBtn">🔄 بازی دوباره</button>
 </div>
 
 <script>
+// سوالات
 const originalQuestions = [
   { text: "🐜 مورچه و شته 🐞", answer: "همیاری" },
   { text: "🐝 زنبور و گل 🌸", answer: "همیاری" },
@@ -484,128 +257,11 @@ const originalQuestions = [
 let shuffledQuestions = [];
 let currentIndex = 0;
 let currentScore = 0;
-let waitingForNext = false;
-let currentButtons = [];
-let questionAnswered = false;
+let waiting = false;
+let answered = false;
 
-const correctMessages = ["آفرین ✨", "احسنت 🌟", "عالی بود 🎉"];
-const wrongMessages = ["دوباره فکر کن 💭", "دقت کن 🎯", "یک بار دیگر تلاش کن 🔄", "کمی بیشتر فکر کن 🤔"];
-
-function createConfetti() {
-  for (let i = 0; i < 80; i++) {
-    const conf = document.createElement("div");
-    conf.classList.add("confetti");
-    const colors = ["#fbbf24", "#34d399", "#f87171", "#60a5fa", "#c084fc", "#f472b6", "#fb923c", "#a855f7"];
-    conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    conf.style.left = Math.random() * 100 + "%";
-    conf.style.width = Math.random() * 14 + 6 + "px";
-    conf.style.height = Math.random() * 14 + 6 + "px";
-    conf.style.position = "fixed";
-    conf.style.top = "-20px";
-    conf.style.borderRadius = "50%";
-    conf.style.opacity = "0.9";
-    document.body.appendChild(conf);
-    setTimeout(() => conf.remove(), 2200);
-  }
-}
-
-function showCountdown(callback) {
-  let count = 3;
-  const countdownDiv = document.createElement('div');
-  countdownDiv.className = 'countdown';
-  document.body.appendChild(countdownDiv);
-  
-  const interval = setInterval(() => {
-    countdownDiv.textContent = count;
-    count--;
-    if (count < 0) {
-      clearInterval(interval);
-      countdownDiv.remove();
-      if (callback) callback();
-    }
-  }, 400);
-}
-
-function updateProgressBar() {
-  const percent = (currentIndex / shuffledQuestions.length) * 100;
-  document.getElementById('progressBar').style.width = percent + '%';
-}
-
-function loadCurrentQuestion() {
-  if (currentIndex >= shuffledQuestions.length) {
-    finishGame();
-    return;
-  }
-  document.getElementById("current").textContent = currentIndex + 1;
-  const qData = shuffledQuestions[currentIndex];
-  document.getElementById("question").innerHTML = qData.text;
-  updateProgressBar();
-  
-  const msgDiv = document.getElementById("msg");
-  msgDiv.innerHTML = "";
-  msgDiv.style.color = "#111";
-  msgDiv.style.background = "#f8fafc";
-  
-  currentButtons.forEach(btn => {
-    btn.classList.remove("correct-effect", "wrong-effect");
-    btn.disabled = false;
-  });
-  waitingForNext = false;
-  questionAnswered = false;
-}
-
-function onAnswer(choice, btnElement) {
-  if (waitingForNext) return;
-  if (questionAnswered) return;
-  if (!shuffledQuestions[currentIndex]) return;
-
-  const correctAnswer = shuffledQuestions[currentIndex].answer;
-  const msgDiv = document.getElementById("msg");
-
-  waitingForNext = true;
-  questionAnswered = true;
-  currentButtons.forEach(btn => { btn.disabled = true; });
-
-  if (choice === correctAnswer) {
-    createConfetti();
-    
-    const randomMsg = correctMessages[Math.floor(Math.random() * correctMessages.length)];
-    msgDiv.innerHTML = `✅ ${randomMsg}`;
-    msgDiv.style.color = "#16a34a";
-    msgDiv.style.background = "#dcfce7";
-    
-    btnElement.classList.add("correct-effect");
-    currentScore++;
-    document.getElementById("score").textContent = currentScore;
-    
-    showCountdown(() => {
-      btnElement.classList.remove("correct-effect");
-      currentIndex++;
-      loadCurrentQuestion();
-    });
-    
-  } else {
-    const randomMsg = wrongMessages[Math.floor(Math.random() * wrongMessages.length)];
-    msgDiv.innerHTML = `❌ ${randomMsg}<br>📖 سوال را دوباره بخوان و تلاش کن!`;
-    msgDiv.style.color = "#dc2626";
-    msgDiv.style.background = "#fee2e2";
-    
-    btnElement.classList.add("wrong-effect");
-    
-    setTimeout(() => {
-      btnElement.classList.remove("wrong-effect");
-      currentButtons.forEach(btn => { btn.disabled = false; });
-      waitingForNext = false;
-      questionAnswered = false;
-      setTimeout(() => {
-        if (msgDiv.innerHTML.includes("❌")) {
-          msgDiv.innerHTML = "";
-          msgDiv.style.background = "#f8fafc";
-        }
-      }, 1500);
-    }, 1200);
-  }
-}
+const correctMsgs = ["آفرین ✨", "احسنت 🌟", "عالی بود 🎉"];
+const wrongMsgs = ["دوباره فکر کن 💭", "دقت کن 🎯", "یک بار دیگر تلاش کن 🔄"];
 
 function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -615,94 +271,160 @@ function shuffleArray(arr) {
   return arr;
 }
 
-function initGame() {
-  shuffledQuestions = shuffleArray([...originalQuestions]);
-  currentIndex = 0;
-  currentScore = 0;
-  waitingForNext = false;
-  questionAnswered = false;
-  
-  document.getElementById("score").textContent = "0";
-  document.getElementById("total").textContent = shuffledQuestions.length;
-  document.getElementById('progressBar').style.width = '0%';
+function showQuestion() {
+  if (currentIndex >= shuffledQuestions.length) {
+    finishGame();
+    return;
+  }
+  document.getElementById("current").textContent = currentIndex + 1;
+  document.getElementById("question").innerHTML = shuffledQuestions[currentIndex].text;
+  document.getElementById("msg").innerHTML = "";
+  document.getElementById("msg").style.background = "#f8fafc";
   
   const btns = document.querySelectorAll("#gamePage .btn.option");
-  currentButtons = [];
-  
   btns.forEach(btn => {
-    const newBtn = btn.cloneNode(true);
-    btn.parentNode.replaceChild(newBtn, btn);
-    
-    const choice = newBtn.getAttribute("data-choice");
-    if (choice) {
-      newBtn.addEventListener("click", function(e) {
-        e.stopPropagation();
-        onAnswer(choice, newBtn);
-      });
-      currentButtons.push(newBtn);
-    }
+    btn.disabled = false;
+    btn.classList.remove("correct-effect", "wrong-effect");
   });
   
-  loadCurrentQuestion();
+  waiting = false;
+  answered = false;
+}
+
+function onAnswer(choice, btn) {
+  if (waiting || answered) return;
+  
+  const correct = shuffledQuestions[currentIndex].answer;
+  const msgDiv = document.getElementById("msg");
+  
+  waiting = true;
+  answered = true;
+  
+  const btns = document.querySelectorAll("#gamePage .btn.option");
+  btns.forEach(b => { b.disabled = true; });
+  
+  if (choice === correct) {
+    const randomMsg = correctMsgs[Math.floor(Math.random() * correctMsgs.length)];
+    msgDiv.innerHTML = `✅ ${randomMsg}`;
+    msgDiv.style.background = "#dcfce7";
+    msgDiv.style.color = "#16a34a";
+    btn.classList.add("correct-effect");
+    currentScore++;
+    document.getElementById("score").textContent = currentScore;
+    
+    for(let i = 0; i < 50; i++) {
+      const conf = document.createElement("div");
+      conf.textContent = ["🎉", "✨", "🌟", "⭐"][Math.floor(Math.random()*4)];
+      conf.style.position = "fixed";
+      conf.style.left = Math.random() * 100 + "%";
+      conf.style.top = "-30px";
+      conf.style.fontSize = "20px";
+      conf.style.pointerEvents = "none";
+      conf.style.zIndex = "999";
+      conf.style.animation = "fall 2s linear forwards";
+      document.body.appendChild(conf);
+      setTimeout(() => conf.remove(), 2000);
+    }
+    
+    setTimeout(() => {
+      currentIndex++;
+      showQuestion();
+    }, 1000);
+    
+  } else {
+    const randomMsg = wrongMsgs[Math.floor(Math.random() * wrongMsgs.length)];
+    msgDiv.innerHTML = `❌ ${randomMsg}<br>📖 دوباره تلاش کن!`;
+    msgDiv.style.background = "#fee2e2";
+    msgDiv.style.color = "#dc2626";
+    btn.classList.add("wrong-effect");
+    
+    setTimeout(() => {
+      btn.classList.remove("wrong-effect");
+      const allBtns = document.querySelectorAll("#gamePage .btn.option");
+      allBtns.forEach(b => { b.disabled = false; });
+      waiting = false;
+      answered = false;
+      setTimeout(() => {
+        if (msgDiv.innerHTML.includes("❌")) {
+          msgDiv.innerHTML = "";
+          msgDiv.style.background = "#f8fafc";
+        }
+      }, 1000);
+    }, 1000);
+  }
 }
 
 function finishGame() {
   document.getElementById("gamePage").classList.add("hidden");
   document.getElementById("finishPage").classList.remove("hidden");
   
-  const totalQuestions = shuffledQuestions.length;
+  const total = shuffledQuestions.length;
   let medal = "🥉";
-  let encouragement = "";
+  let msg = "";
   
   if (currentScore === 10) {
     medal = "🥇";
-    encouragement = "🎉🌟 آفرین! درس را عالی یاد گرفتی! 🌟🎉";
+    msg = "🎉🌟 آفرین! درس را عالی یاد گرفتی! 🌟🎉";
   } else if (currentScore >= 8) {
     medal = "🥈";
-    encouragement = "👏 خیلی خوب! دانشت عالی است! 👏";
+    msg = "👏 خیلی خوب! دانشت عالی است! 👏";
   } else if (currentScore >= 5) {
     medal = "🥉";
-    encouragement = "👍 خوب بود! می‌توانی بهتر هم شوی! 👍";
+    msg = "👍 خوب بود! می‌توانی بهتر هم شوی! 👍";
   } else {
     medal = "🥉";
-    encouragement = "💪 آفرین! بیشتر تلاش کن تا مطالب در یادت بماند! 💪";
+    msg = "💪 آفرین! بیشتر تلاش کن تا مطالب در یادت بماند! 💪";
   }
   
   document.getElementById("medal").textContent = medal;
-  document.getElementById("resultText").innerHTML = 
-    `🌟 امتیاز شما: ${currentScore} از ${totalQuestions}<br><br>${encouragement}`;
-  
-  if (currentScore >= 8) {
-    createConfetti();
-    setTimeout(createConfetti, 500);
-    setTimeout(createConfetti, 1000);
-  }
+  document.getElementById("resultText").innerHTML = `🌟 امتیاز شما: ${currentScore} از ${total}<br><br>${msg}`;
 }
 
 function startGame() {
+  shuffledQuestions = shuffleArray([...originalQuestions]);
+  currentIndex = 0;
+  currentScore = 0;
+  waiting = false;
+  answered = false;
+  
+  document.getElementById("score").textContent = "0";
+  document.getElementById("total").textContent = shuffledQuestions.length;
   document.getElementById("startPage").classList.add("hidden");
   document.getElementById("gamePage").classList.remove("hidden");
-  initGame();
+  showQuestion();
 }
 
 function restartGame() {
+  shuffledQuestions = shuffleArray([...originalQuestions]);
+  currentIndex = 0;
+  currentScore = 0;
+  waiting = false;
+  answered = false;
+  
+  document.getElementById("score").textContent = "0";
+  document.getElementById("total").textContent = shuffledQuestions.length;
   document.getElementById("finishPage").classList.add("hidden");
   document.getElementById("gamePage").classList.remove("hidden");
-  initGame();
+  showQuestion();
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  const startBtn = document.getElementById("startBtn");
-  if (startBtn) {
-    startBtn.addEventListener("click", startGame);
+document.getElementById("startBtn").addEventListener("click", startGame);
+document.getElementById("restartBtn").addEventListener("click", restartGame);
+document.getElementById("btn1").addEventListener("click", function() { onAnswer("همیاری", this); });
+document.getElementById("btn2").addEventListener("click", function() { onAnswer("همسفرگی", this); });
+document.getElementById("btn3").addEventListener("click", function() { onAnswer("انگلی", this); });
+
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
   }
-  
-  const restartBtn = document.getElementById("restartBtn");
-  if (restartBtn) {
-    restartBtn.addEventListener("click", restartGame);
-  }
-});
+`;
+document.head.appendChild(style);
 </script>
 </body>
 </html>
 ```
+
+---
