@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>زیست‌یار | بازی همزیستی</title>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
 * {
@@ -23,6 +23,26 @@ body {
   align-items: center;
   padding: 20px;
   position: relative;
+  overflow-x: hidden;
+}
+
+/* پس‌زمینه متحرک موج‌ها */
+body::before {
+  content: '';
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: repeating-linear-gradient(transparent 0px, transparent 98px, rgba(255,255,255,0.08) 98px, rgba(255,255,255,0.08) 100px);
+  animation: waveMove 8s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes waveMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 100% 0; }
 }
 
 .card {
@@ -30,13 +50,26 @@ body {
   max-width: 950px;
   background: rgba(255,255,255,0.98);
   backdrop-filter: blur(5px);
-  color: #111;
   border-radius: 40px;
   padding: 35px;
   box-shadow: 0 25px 55px rgba(0,0,0,0.3);
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(255,255,255,0.3);
+  animation: cardEnter 0.5s ease-out;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .hidden {
@@ -51,6 +84,10 @@ h1 {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
 h2 {
@@ -69,18 +106,30 @@ h2 {
 }
 
 .sampad-icon {
-  font-size: 75px;
-  background: linear-gradient(135deg, #1e3a5f, #0f766e);
-  color: #ffd700;
   width: 110px;
   height: 110px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   margin-bottom: 15px;
   transition: transform 0.3s;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1e3a5f, #0f766e);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  animation: glowPulse 2s infinite;
+}
+
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,215,0,0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(255,215,0,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); }
+}
+
+.sampad-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .sampad-icon:hover {
@@ -110,7 +159,27 @@ h2 {
   transition: all 0.2s ease;
   background: linear-gradient(135deg, #0ea5e9, #0284c7);
   color: white;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+  width: 300px;
+  height: 300px;
 }
 
 .btn:active {
@@ -118,24 +187,38 @@ h2 {
 }
 
 .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.3);
 }
 
 .option {
   background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  position: relative;
+  transition: all 0.2s;
+}
+
+.option:hover {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  box-shadow: 0 0 15px rgba(14,165,233,0.5);
 }
 
 .correct-effect {
   background: linear-gradient(135deg, #22c55e, #16a34a) !important;
-  box-shadow: 0 0 0 4px #bbf7d0;
+  box-shadow: 0 0 0 4px #bbf7d0, 0 0 20px #22c55e !important;
   transition: 0.1s;
 }
 
 .wrong-effect {
   background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-  box-shadow: 0 0 0 4px #fecaca;
+  box-shadow: 0 0 0 4px #fecaca, 0 0 20px #ef4444 !important;
+  animation: shake 0.3s ease-in-out 0s 2;
   transition: 0.1s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
 }
 
 .message {
@@ -151,22 +234,48 @@ h2 {
   background: #f8fafc;
   border-radius: 60px;
   padding: 15px;
+  font-weight: 700;
+  transition: all 0.3s;
 }
 
-.progress {
+/* نوار پیشرفت */
+.progress-container {
   margin-top: 10px;
-  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.progress-text {
+  font-size: 1rem;
   font-weight: 700;
   background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
-  display: inline-block;
-  padding: 8px 25px;
+  padding: 8px 20px;
   border-radius: 40px;
   color: #0f172a;
 }
 
+.progress-bar-wrapper {
+  flex: 1;
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #0ea5e9, #22c55e);
+  width: 0%;
+  border-radius: 20px;
+  transition: width 0.5s ease;
+}
+
 .question {
-  font-size: 2.2rem;
-  font-weight: 900;
+  font-size: 2rem;
+  font-weight: 800;
   margin: 25px 0;
   background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
   padding: 30px;
@@ -178,28 +287,26 @@ h2 {
   gap: 20px;
   flex-wrap: wrap;
   box-shadow: inset 0 1px 4px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.creature-icon {
-  font-size: 3rem;
-  background: white;
-  padding: 12px;
-  border-radius: 60px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  letter-spacing: 1px;
 }
 
 .medal {
   font-size: 100px;
   margin-bottom: 20px;
-  animation: bounce 0.6s ease;
-  filter: drop-shadow(0 8px 15px rgba(0,0,0,0.2));
+  animation: medalSpin 0.8s ease-out, bounce 0.6s ease;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.2));
 }
 
-.dna {
+@keyframes medalSpin {
+  0% { transform: rotate(-180deg) scale(0); opacity: 0; }
+  100% { transform: rotate(0deg) scale(1); opacity: 1; }
+}
+
+.dna-bg {
   font-size: 85px;
   opacity: 0.1;
   position: fixed;
-  animation: float 8s infinite alternate;
+  animation: floatSlow 10s infinite alternate;
   pointer-events: none;
 }
 
@@ -213,9 +320,9 @@ h2 {
   right: 3%;
 }
 
-@keyframes float {
-  from { transform: translateY(0px) rotate(0deg); }
-  to { transform: translateY(-45px) rotate(5deg); }
+@keyframes floatSlow {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-50px) rotate(8deg); }
 }
 
 @keyframes bounce {
@@ -241,9 +348,36 @@ h2 {
   }
 }
 
+/* افکت شمارش معکوس */
+.countdown {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem;
+  font-weight: 900;
+  color: white;
+  background: rgba(0,0,0,0.7);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: countdownPulse 0.8s ease-out;
+  pointer-events: none;
+}
+
+@keyframes countdownPulse {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
 @media (max-width: 700px) {
   .question {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     padding: 20px;
   }
   .btn {
@@ -251,34 +385,40 @@ h2 {
     padding: 14px;
   }
   .message {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
   .card {
     padding: 20px;
   }
-  .creature-icon {
-    font-size: 2rem;
-  }
   .sampad-icon {
     width: 80px;
     height: 80px;
-    font-size: 55px;
   }
   .school-name {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+  }
+  .progress-container {
+    flex-direction: column;
+  }
+  .countdown {
+    font-size: 3rem;
+    width: 70px;
+    height: 70px;
   }
 }
 </style>
 </head>
 <body>
 
-<div class="dna dna1">🧬</div>
-<div class="dna dna2">🧬</div>
+<div class="dna-bg dna1">🧬</div>
+<div class="dna-bg dna2">🧬</div>
 
 <!-- صفحه شروع -->
 <div id="startPage" class="card">
   <div class="sampad-logo">
-    <div class="sampad-icon">🎓</div>
+    <div class="sampad-icon">
+      <img src="sampad-logo.png" alt="سمپاد" onerror="this.src='https://placehold.co/100x100/1e3a5f/ffd700?text=🎓'">
+    </div>
     <div class="school-name">🏫 مدرسه فرزانگان ۱ شهریار</div>
   </div>
   
@@ -298,8 +438,11 @@ h2 {
 
 <!-- صفحه بازی -->
 <div id="gamePage" class="card hidden">
-  <div class="progress">
-    📖 سؤال <span id="current">1</span> از <span id="total">10</span>
+  <div class="progress-container">
+    <div class="progress-text">📖 سؤال <span id="current">1</span> از <span id="total">10</span></div>
+    <div class="progress-bar-wrapper">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
   </div>
   <div id="msg" class="message"></div>
   <div id="question" class="question"></div>
@@ -321,9 +464,9 @@ h2 {
 <!-- صفحه پایان -->
 <div id="finishPage" class="card hidden">
   <div id="medal" class="medal">🥇</div>
-  <h1>🎉 تبریک</h1>
+  <h1>🎉 پایان بازی</h1>
   <br>
-  <p id="resultText" style="font-size:1.3rem; font-weight:500;"></p>
+  <p id="resultText" style="font-size:1.3rem; font-weight:500; line-height:2;"></p>
   <br>
   <button class="btn" id="restartBtn">
     <i class="fas fa-redo-alt"></i> بازی دوباره
@@ -331,7 +474,6 @@ h2 {
 </div>
 
 <script>
-// ---------- بانک سوالات با آیکون‌های جذاب ----------
 const originalQuestions = [
   { text: "🐜 مورچه و شته 🐞", answer: "همیاری" },
   { text: "🐝 زنبور و گل 🌸", answer: "همیاری" },
@@ -345,59 +487,24 @@ const originalQuestions = [
   { text: "🕷️ کنه و گاو 🐄", answer: "انگلی" }
 ];
 
-// متغیرهای سراسری
 let shuffledQuestions = [];
 let currentIndex = 0;
 let currentScore = 0;
 let waitingForNext = false;
 let currentButtons = [];
 
-// پیام‌های تشویقی
 const correctMessages = ["آفرین ✨", "احسنت 🌟", "عالی بود 🎉"];
-const wrongMessages = ["دوباره فکر کن 💭", "دقت کن 🎯"];
-
-// صدای کف زدن
-function playClapSound() {
-  try {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const gainNode = audioContext.createGain();
-    gainNode.connect(audioContext.destination);
-    gainNode.gain.value = 0.35;
-    
-    const now = audioContext.currentTime;
-    const bufferSize = 4096;
-    const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-    const output = noiseBuffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      output[i] = (Math.random() * 2 - 1) * 0.5;
-    }
-    
-    const noise = audioContext.createBufferSource();
-    noise.buffer = noiseBuffer;
-    noise.loop = true;
-    noise.connect(gainNode);
-    noise.start();
-    
-    gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
-    noise.stop(now + 0.35);
-    
-    if (audioContext.state === 'suspended') {
-      audioContext.resume();
-    }
-  } catch(e) {
-    console.log("صدای کف زدن پشتیبانی نمی‌شود");
-  }
-}
+const wrongMessages = ["دوباره فکر کن 💭", "دقت کن 🎯", "یک بار دیگر تلاش کن 🔄", "کمی بیشتر فکر کن 🤔"];
 
 function createConfetti() {
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 80; i++) {
     const conf = document.createElement("div");
     conf.classList.add("confetti");
-    const colors = ["#fbbf24", "#34d399", "#f87171", "#60a5fa", "#c084fc", "#f472b6", "#fb923c"];
+    const colors = ["#fbbf24", "#34d399", "#f87171", "#60a5fa", "#c084fc", "#f472b6", "#fb923c", "#a855f7"];
     conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
     conf.style.left = Math.random() * 100 + "%";
-    conf.style.width = Math.random() * 12 + 6 + "px";
-    conf.style.height = Math.random() * 12 + 6 + "px";
+    conf.style.width = Math.random() * 14 + 6 + "px";
+    conf.style.height = Math.random() * 14 + 6 + "px";
     conf.style.position = "fixed";
     conf.style.top = "-20px";
     conf.style.borderRadius = "50%";
@@ -405,6 +512,28 @@ function createConfetti() {
     document.body.appendChild(conf);
     setTimeout(() => conf.remove(), 2200);
   }
+}
+
+function showCountdown(callback) {
+  let count = 3;
+  const countdownDiv = document.createElement('div');
+  countdownDiv.className = 'countdown';
+  document.body.appendChild(countdownDiv);
+  
+  const interval = setInterval(() => {
+    countdownDiv.textContent = count;
+    count--;
+    if (count < 0) {
+      clearInterval(interval);
+      countdownDiv.remove();
+      if (callback) callback();
+    }
+  }, 400);
+}
+
+function updateProgressBar() {
+  const percent = ((currentIndex) / shuffledQuestions.length) * 100;
+  document.getElementById('progressBar').style.width = percent + '%';
 }
 
 function loadCurrentQuestion() {
@@ -415,6 +544,7 @@ function loadCurrentQuestion() {
   document.getElementById("current").textContent = currentIndex + 1;
   const qData = shuffledQuestions[currentIndex];
   document.getElementById("question").innerHTML = qData.text;
+  updateProgressBar();
   
   const msgDiv = document.getElementById("msg");
   msgDiv.innerHTML = "";
@@ -439,7 +569,6 @@ function onAnswer(choice, btnElement) {
   currentButtons.forEach(btn => { btn.disabled = true; });
 
   if (choice === correctAnswer) {
-    playClapSound();
     createConfetti();
     
     const randomMsg = correctMessages[Math.floor(Math.random() * correctMessages.length)];
@@ -451,7 +580,7 @@ function onAnswer(choice, btnElement) {
     currentScore++;
     document.getElementById("score").textContent = currentScore;
     
-    setTimeout(() => {
+    showCountdown(() => {
       btnElement.classList.remove("correct-effect");
       currentIndex++;
       if (currentIndex >= shuffledQuestions.length) {
@@ -459,16 +588,11 @@ function onAnswer(choice, btnElement) {
       } else {
         loadCurrentQuestion();
       }
-    }, 900);
+    });
     
   } else {
-    if (currentScore > 0) {
-      currentScore--;
-    }
-    document.getElementById("score").textContent = currentScore;
-    
     const randomMsg = wrongMessages[Math.floor(Math.random() * wrongMessages.length)];
-    msgDiv.innerHTML = `❌ ${randomMsg}<br>📚 پاسخ صحیح: ${correctAnswer}`;
+    msgDiv.innerHTML = `❌ ${randomMsg}<br>📖 سوال را دوباره بخوان و تلاش کن!`;
     msgDiv.style.color = "#dc2626";
     msgDiv.style.background = "#fee2e2";
     
@@ -483,7 +607,7 @@ function onAnswer(choice, btnElement) {
           msgDiv.innerHTML = "";
           msgDiv.style.background = "#f8fafc";
         }
-      }, 1600);
+      }, 1500);
     }, 1200);
   }
 }
@@ -504,6 +628,7 @@ function initGame() {
   
   document.getElementById("score").textContent = "0";
   document.getElementById("total").textContent = shuffledQuestions.length;
+  document.getElementById('progressBar').style.width = '0%';
   
   const btns = document.querySelectorAll("#gamePage .btn.option");
   currentButtons = [];
@@ -531,27 +656,30 @@ function finishGame() {
   
   const totalQuestions = shuffledQuestions.length;
   let medal = "🥉";
-  let medalText = "مدال برنز";
-  if (currentScore >= 8 && currentScore <= 9) {
-    medal = "🥈";
-    medalText = "مدال نقره";
-  }
+  let encouragement = "";
+  
   if (currentScore === 10) {
     medal = "🥇";
-    medalText = "مدال طلا";
-  }
-  if (currentScore < 5) {
+    encouragement = "🎉🌟 آفرین! درس را عالی یاد گرفتی! 🌟🎉";
+  } else if (currentScore >= 8) {
+    medal = "🥈";
+    encouragement = "👏 خیلی خوب! دانشت عالی است! 👏";
+  } else if (currentScore >= 5) {
     medal = "🥉";
-    medalText = "مدال برنز";
+    encouragement = "👍 خوب بود! می‌توانی بهتر هم شوی! 👍";
+  } else {
+    medal = "🥉";
+    encouragement = "💪 آفرین! بیشتر تلاش کن تا مطالب در یادت بماند! 💪";
   }
   
   document.getElementById("medal").textContent = medal;
   document.getElementById("resultText").innerHTML = 
-    `🌟 شما موفق شدید ${currentScore} امتیاز از ${totalQuestions} کسب کنید.<br><br>🏅 ${medalText}<br><br>🌿 روابط همزیستی را با موفقیت بررسی کردید.`;
+    `🌟 امتیاز شما: ${currentScore} از ${totalQuestions}<br><br>${encouragement}`;
   
-  if (medal === "🥇") {
+  if (currentScore >= 8) {
     createConfetti();
-    setTimeout(createConfetti, 400);
+    setTimeout(createConfetti, 500);
+    setTimeout(createConfetti, 1000);
   }
 }
 
