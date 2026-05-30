@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="fa" dir="rtl">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -16,7 +17,7 @@ body {
   background: linear-gradient(135deg, #0b1f3a, #0f766e);
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+ justify-content: center;
   align-items: center;
   padding: 20px;
 }
@@ -34,7 +35,7 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 h1 {
@@ -156,7 +157,6 @@ h2 {
   position: fixed;
   width: 12px;
   height: 12px;
-  background: gold;
   position: absolute;
   animation: fall 2s linear forwards;
   z-index: 999;
@@ -226,4 +226,234 @@ h2 {
 <!-- صفحه پایان -->
 <div id="finishPage" class="card hidden">
   <div id="medal" class="medal">🥇</div>
-  <
+  <h1>🎉 تبریک</h1>
+  <br>
+  <p id="resultText" style="font-size:24px"></p>
+  <br>
+  <h2>✨ طراح: خانم معصومه مرتجایی</h2>
+  <button class="btn option" id="restartBtn" style="margin-top: 30px;">🔄 بازی دوباره</button>
+</div>
+
+<script>
+// ---------- بانک سوالات اصلی ----------
+const originalQuestions = [
+  ["مورچه و شته", "همیاری"],
+  ["زنبور و گل", "همیاری"],
+  ["میگوی تمیزکننده و کوسه", "همیاری"],
+  ["گلسنگ", "همیاری"],
+  ["باکتری روده و انسان", "همیاری"],
+  ["شیر و کفتار", "همسفرگی"],
+  ["ماهی کوچک و کوسه", "همسفرگی"],
+  ["لاک‌پشت و جلبک", "همسفرگی"],
+  ["کرمک و انسان", "انگلی"],
+  ["کنه و گاو", "انگلی"]
+];
+
+// متغیرهای سراسری
+let shuffledQuestions = [];
+let currentIndex = 0;
+let currentScore = 0;
+let waitingForNext = false;
+let currentButtons = [];
+
+// -------- تعریف فایل‌های صوتی (در صورت وجود) --------
+const correctAudios = ["aferin.ogg", "ahsan.ogg", "kheili-khoob-gofti.ogg", "ali-bud.ogg"];
+const wrongAudios = ["deghat-kon.ogg", "eshtebah-bud.ogg", "dobare-fekr-kon.ogg"];
+
+function playRandomSound(audioArray) {
+  if (!audioArray || audioArray.length === 0) return;
+  const randomFile = audioArray[Math.floor(Math.random() * audioArray.length)];
+  const audio = new Audio(randomFile);
+  audio.play().catch(e => console.log("فایل صوتی یافت نشد:", randomFile));
+}
+
+function createConfetti() {
+  for (let i = 0; i < 60; i++) {
+    const conf = document.createElement("div");
+    conf.classList.add("confetti");
+    const colors = ["#fbbf24", "#34d399", "#f87171", "#60a5fa", "#c084fc", "#f472b6"];
+    conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    conf.style.left = Math.random() * 100 + "%";
+    conf.style.width = Math.random() * 10 + 6 + "px";
+    conf.style.height = Math.random() * 10 + 6 + "px";
+    conf.style.position = "fixed";
+    conf.style.top = "-20px";
+    conf.style.borderRadius = "50%";
+    conf.style.opacity = "0.9";
+    document.body.appendChild(conf);
+    setTimeout(() => conf.remove(), 2000);
+  }
+}
+
+function loadCurrentQuestion() {
+  if (currentIndex >= shuffledQuestions.length) {
+    finishGame();
+    return;
+  }
+  document.getElementById("current").textContent = currentIndex + 1;
+  const qText = shuffledQuestions[currentIndex][0];
+  document.getElementById("question").textContent = qText;
+  
+  const msgDiv = document.getElementById("msg");
+  msgDiv.innerHTML = "";
+  msgDiv.style.color = "#111";
+  
+  // فعال کردن دکمه‌ها و حذف افکت‌ها
+  currentButtons.forEach(btn => {
+    btn.classList.remove("correct-effect", "wrong-effect");
+    btn.disabled = false;
+  });
+  waitingForNext = false;
+}
+
+function onAnswer(choice, btnElement) {
+  if (waitingForNext) return;
+  if (!shuffledQuestions[currentIndex]) return;
+
+  const correctAnswer = shuffledQuestions[currentIndex][1];
+  const msgDiv = document.getElementById("msg");
+
+  waitingForNext = true;
+  currentButtons.forEach(btn => { btn.disabled = true; });
+
+  if (choice === correctAnswer) {
+    // پاسخ صحیح
+    playRandomSound(correctAudios);
+    createConfetti();
+    
+    const praises = ["🌟 آفرین", "👏 احسنت", "🎉 عالی بود", "⭐ بسیار خوب", "🏆 درست است", "🧠 دقیق!", "💪 عالی!", "🌸 آفرین به تو"];
+    const randomPraises = praises[Math.floor(Math.random() * praises.length)];
+    msgDiv.innerHTML = `✅ ${randomPraises}`;
+    msgDiv.style.color = "#16a34a";
+    
+    btnElement.classList.add("correct-effect");
+    currentScore++;
+    document.getElementById("score").textContent = currentScore;
+    
+    setTimeout(() => {
+      btnElement.classList.remove("correct-effect");
+      currentIndex++;
+      if (currentIndex >= shuffledQuestions.length) {
+        finishGame();
+      } else {
+        loadCurrentQuestion();
+      }
+    }, 1000);
+    
+  } else {
+    // پاسخ اشتباه
+    playRandomSound(wrongAudios);
+    
+    msgDiv.innerHTML = `❌ متأسفم، اشتباه بود. پاسخ صحیح: ${correctAnswer}<br>دوباره تلاش کن.`;
+    msgDiv.style.color = "#dc2626";
+    
+    btnElement.classList.add("wrong-effect");
+    
+    setTimeout(() => {
+      btnElement.classList.remove("wrong-effect");
+      currentButtons.forEach(btn => { btn.disabled = false; });
+      waitingForNext = false;
+      setTimeout(() => {
+        if (msgDiv.innerHTML.includes("متأسفم")) {
+          msgDiv.innerHTML = "";
+        }
+      }, 1500);
+    }, 1200);
+  }
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function initGame() {
+  // کپی و تصادفی کردن سوالات
+  shuffledQuestions = shuffleArray([...originalQuestions]);
+  currentIndex = 0;
+  currentScore = 0;
+  waitingForNext = false;
+  
+  document.getElementById("score").textContent = "0";
+  document.getElementById("total").textContent = shuffledQuestions.length;
+  
+  // گرفتن دکمه‌های پاسخ
+  const btns = document.querySelectorAll("#gamePage .btn.option");
+  currentButtons = [];
+  
+  btns.forEach(btn => {
+    // حذف eventListenerهای قبلی با clone
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    
+    const choice = newBtn.getAttribute("data-choice");
+    if (choice) {
+      newBtn.addEventListener("click", function(e) {
+        e.stopPropagation();
+        onAnswer(choice, newBtn);
+      });
+      currentButtons.push(newBtn);
+    }
+  });
+  
+  loadCurrentQuestion();
+}
+
+function finishGame() {
+  document.getElementById("gamePage").classList.add("hidden");
+  document.getElementById("finishPage").classList.remove("hidden");
+  
+  const totalQuestions = shuffledQuestions.length;
+  let medal = "🥉";
+  if (currentScore >= 8 && currentScore <= 9) medal = "🥈";
+  if (currentScore === 10) medal = "🥇";
+  if (currentScore < 5) medal = "🥉";
+  
+  document.getElementById("medal").textContent = medal;
+  document.getElementById("resultText").innerHTML = 
+    `🌟 شما موفق شدید ${currentScore} امتیاز از ${totalQuestions} کسب کنید.<br><br>روابط همزیستی را با موفقیت بررسی کردید.`;
+  
+  if (medal === "🥇") {
+    createConfetti();
+    setTimeout(createConfetti, 300);
+  }
+}
+
+function startGame() {
+  // مخفی کردن صفحه شروع
+  document.getElementById("startPage").classList.add("hidden");
+  // نمایش صفحه بازی
+  document.getElementById("gamePage").classList.remove("hidden");
+  // مقداردهی اولیه بازی
+  initGame();
+}
+
+function restartGame() {
+  // مخفی کردن صفحه پایان
+  document.getElementById("finishPage").classList.add("hidden");
+  // نمایش صفحه بازی
+  document.getElementById("gamePage").classList.remove("hidden");
+  // مقداردهی مجدد
+  initGame();
+}
+
+// اتصال رویدادها بعد از بارگذاری کامل صفحه
+document.addEventListener("DOMContentLoaded", function() {
+  const startBtn = document.getElementById("startBtn");
+  if (startBtn) {
+    startBtn.addEventListener("click", startGame);
+  }
+  
+  const restartBtn = document.getElementById("restartBtn");
+  if (restartBtn) {
+    restartBtn.addEventListener("click", restartGame);
+  }
+});
+
+console.log("زیست‌یار آماده است - برای شروع دکمه را بزنید");
+</script>
+</body>
+</html>
