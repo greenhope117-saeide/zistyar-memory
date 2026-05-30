@@ -1,2 +1,229 @@
-DOCTYPE html> <html lang="fa" dir="rtl"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>زیست‌یار</title> <style> body{ font-family:tahoma; margin:0; background:#f0f8ff; text-align:center; } .screen{ display:none; padding:20px; } .active{ display:block; } h1{ color:#2e7d32; } button{ padding:12px; margin:8px; width:90%; max-width:350px; border:none; border-radius:12px; font-size:18px; cursor:pointer; } .option{ background:#ffffff; } .start-btn{ background:#4caf50; color:white; font-size:22px; } #score{ font-size:22px; color:#1565c0; } .medal{ font-size:80px; } #confetti{ position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; } </style> </head> <body> <canvas id="confetti"></canvas> <!-- صفحه شروع --> <div id="startScreen" class="screen active"> <h1>🧬 زیست‌یار</h1> <h3>طراح: خانم معصومه مرتجایی</h3> <p><b>«نوع رابطه همزیستی موجودات زیر را مشخص کنید.»</b></p> <button class="start-btn" onclick="startGame()"> 🎮 شروع بازی </button> </div> <!-- صفحه سوال --> <div id="quizScreen" class="screen"> <h2 id="question"></h2> <button class="option" onclick="checkAnswer('همیاری')">همیاری</button> <button class="option" onclick="checkAnswer('همسفرگی')">همسفرگی</button> <button class="option" onclick="checkAnswer('انگلی')">انگلی</button> <p id="message"></p> </div> <!-- پایان بازی --> <div id="endScreen" class="screen"> <h1>🎉 پایان بازی 🎉</h1> <div id="score"></div> <div id="medal" class="medal"></div> <button class="start-btn" onclick="location.reload()"> بازی دوباره </button> </div> <script> const questions = [ { q:"مورچه و شته", a:"همیاری" }, { q:"زنبور و گل", a:"همیاری" }, { q:"میگوی تمیزکننده و کوسه", a:"همیاری" }, { q:"گلسنگ", a:"همیاری" }, { q:"باکتری روده و انسان", a:"همیاری" }, { q:"شیر و کفتار", a:"همسفرگی" }, { q:"ماهی کوچک و کوسه", a:"همسفرگی" }, { q:"لاک‌پشت و جلبک", a:"همسفرگی" }, { q:"کرمک و انسان", a:"انگلی" }, { q:"کنه و گاو", a:"انگلی" } ]; const praise = [ "🌟 عالی بود!", "👏 آفرین!", "🎉 درست گفتی!", "💯 فوق‌العاده!", "🏆 احسنت!" ]; let shuffled=[]; let current=0; let score=0; function shuffle(array){ for(let i=array.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [array[i],array[j]]=[array[j],array[i]]; } return array; } function startGame(){ document.getElementById("startScreen").classList.remove("active"); document.getElementById("quizScreen").classList.add("active"); shuffled=shuffle([...questions]); showQuestion(); } function showQuestion(){ document.getElementById("message").innerHTML=""; document.getElementById("question").innerHTML= (current+1)+" / "+shuffled.length+ "<br><br>"+shuffled[current].q; } function checkAnswer(ans){ if(ans===shuffled[current].a){ score++; document.getElementById("message").innerHTML= praise[Math.floor(Math.random()praise.length)]; launchConfetti(); setTimeout(()=>{ current++; if(current<shuffled.length){ showQuestion(); }else{ endGame(); } },1000); }else{ document.getElementById("message").innerHTML= "❌ پاسخ نادرست است، دوباره تلاش کنید."; } } function endGame(){ document.getElementById("quizScreen").classList.remove("active"); document.getElementById("endScreen").classList.add("active"); launchConfettiBig(); document.getElementById("score").innerHTML= "امتیاز شما: "+score+" از 10"; let medal=""; if(score>=8){ medal="🥇"; }else if(score>=5){ medal="🥈"; }else{ medal="🥉"; } document.getElementById("medal").innerHTML=medal; } / کاغذرنگی */ const canvas=document.getElementById("confetti"); const ctx=canvas.getContext("2d"); canvas.width=window.innerWidth; canvas.height=window.innerHeight; function confettiBurst(count){ let pieces=[]; for(let i=0;i<count;i++){ pieces.push({ x:Math.random()*canvas.width, y:0, size:5+Math.random()*8, speed:2+Math.random()*4, color:`hsl(${Math.random()*360},100%,50%)` }); } let frame=0; function draw(){ ctx.clearRect(0,0,canvas.width,canvas.height); pieces.forEach(p=>{ ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.
-size,p.size); p.y+=p.speed; }); frame++; if(frame<80){ requestAnimationFrame(draw); }else{ ctx.clearRect(0,0,canvas.width,canvas.height); } } draw(); } function launchConfetti(){ confettiBurst(80); } function launchConfettiBig(){ confettiBurst(250); } </script> </body> </html> 
+<!DOCTYPE html><html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>زیست‌یار | بازی همزیستی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Vazirmatn', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0b1f3a, #0f766e);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 900px;
+  background: white;
+  color: #111;
+  border-radius: 30px;
+  padding: 30px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.hidden {
+  display: none;
+}
+
+h1 {
+  margin-bottom: 15px;
+  font-size: 2rem;
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  color: #0f766e;
+}
+
+.btn {
+  width: 100%;
+  padding: 18px;
+  margin-top: 12px;
+  font-size: 22px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-weight: 700;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.option {
+  background: #0ea5e9;
+  color: white;
+}
+
+.option:hover {
+  background: #0284c7;
+}
+
+.correct-effect {
+  background: #22c55e !important;
+  box-shadow: 0 0 0 4px #bbf7d0;
+  transition: 0.1s;
+}
+
+.wrong-effect {
+  background: #ef4444 !important;
+  box-shadow: 0 0 0 4px #fecaca;
+  transition: 0.1s;
+}
+
+.message {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 20px 0;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.progress {
+  margin-top: 10px;
+  font-size: 20px;
+  background: #e2e8f0;
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 40px;
+  color: #0f172a;
+}
+
+.question {
+  font-size: 38px;
+  font-weight: 800;
+  margin: 30px 0;
+  background: #f1f5f9;
+  padding: 25px;
+  border-radius: 48px;
+  line-height: 1.4;
+}
+
+.medal {
+  font-size: 90px;
+  margin-bottom: 20px;
+  animation: bounce 0.6s ease;
+}
+
+.dna {
+  font-size: 70px;
+  opacity: 0.15;
+  position: fixed;
+  animation: float 8s infinite alternate;
+  pointer-events: none;
+}
+
+.dna1 {
+  top: 10%;
+  left: 5%;
+}
+
+.dna2 {
+  bottom: 10%;
+  right: 5%;
+}
+
+@keyframes float {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-40px); }
+}
+
+@keyframes bounce {
+  0% { transform: scale(0.8); opacity: 0; }
+  80% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.confetti {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: gold;
+  position: absolute;
+  animation: fall 2s linear forwards;
+  z-index: 999;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .question {
+    font-size: 28px;
+    padding: 18px;
+  }
+  .btn {
+    font-size: 20px;
+    padding: 14px;
+  }
+  .message {
+    font-size: 20px;
+  }
+  .card {
+    padding: 20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="dna dna1">🧬</div>
+<div class="dna dna2">🧬</div>
+
+<!-- صفحه شروع -->
+<div id="startPage" class="card">
+  <h1>🧬 زیست‌یار</h1>
+  <h2>✨ طراح: خانم معصومه مرتجایی</h2>
+  <br>
+  <p style="font-size:22px">
+    شرکت‌کننده گرامی
+    <br><br>
+    نوع رابطه همزیستی موجودات زیر را مشخص کنید.
+  </p>
+  <br><br>
+  <button class="btn option" id="startBtn">🎮 شروع بازی</button>
+</div>
+
+<!-- صفحه بازی -->
+<div id="gamePage" class="card hidden">
+  <div class="progress">
+    سؤال <span id="current">1</span> از <span id="total">10</span>
+  </div>
+  <div id="msg" class="message"></div>
+  <div id="question" class="question"></div>
+  <button class="btn option" data-choice="همیاری">🤝 همیاری</button>
+  <button class="btn option" data-choice="همسفرگی">🍽️ همسفرگی</button>
+  <button class="btn option" data-choice="انگلی">🪱 انگلی</button>
+  <br><br>
+  <div style="font-size:22px">
+    ⭐ امتیاز: <span id="score">0</span>
+  </div>
+</div>
+
+<!-- صفحه پایان -->
+<div id="finishPage" class="card hidden">
+  <div id="medal" class="medal">🥇</div>
+  <
