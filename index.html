@@ -143,14 +143,46 @@ h1 {
   margin-bottom: 10px;
 }
 
+/* دکمه موسیقی */
+.music-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  transition: 0.2s;
+}
+
+.music-btn:hover {
+  background: rgba(255,255,255,0.5);
+  transform: scale(1.05);
+}
+
 @media (max-width: 550px) {
   .card { padding: 20px; }
   .question-box { font-size: 1.2rem; }
   .btn { font-size: 1rem; }
+  .music-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    bottom: 15px;
+    left: 15px;
+  }
 }
 </style>
 </head>
 <body>
+
+<!-- دکمه کنترل موسیقی -->
+<button class="music-btn" id="musicToggleBtn">🔇</button>
 
 <!-- صفحه شروع -->
 <div id="startPage" class="card">
@@ -182,7 +214,113 @@ h1 {
 </div>
 
 <script>
-// ========== سوالات ==========
+// ========== موسیقی پس زمینه (بی‌کلام و ملایم) ==========
+let audioContext = null;
+let musicSource = null;
+let musicGain = null;
+let isMusicPlaying = false;
+
+// نت‌های ساده و ملایم (گام دو ماژور آرام)
+const melodyNotes = [
+  261.63, 293.66, 329.63, 261.63,  // C4, D4, E4, C4
+  329.63, 293.66, 261.63, 392.00,  // E4, D4, C4, G4
+  261.63, 329.63, 293.66, 261.63,  // C4, E4, D4, C4
+  293.66, 329.63, 392.00, 349.23   // D4, E4, G4, F4
+];
+
+const melodyDurations = [
+  0.5, 0.5, 0.5, 0.5,
+  0.5, 0.5, 1.0, 0.5,
+  0.5, 0.5, 0.5, 0.5,
+  0.5, 0.5, 1.0, 1.0
+];
+
+let currentNoteIndex = 0;
+let scheduledTime = 0;
+let isMusicLooping = false;
+
+function initAudio() {
+  if (audioContext) return;
+  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  musicGain = audioContext.createGain();
+  musicGain.gain.value = 0.15;  // صدای ملایم
+  musicGain.connect(audioContext.destination);
+}
+
+function playNextNote() {
+  if (!isMusicLooping || !audioContext) return;
+  
+  const now = audioContext.currentTime;
+  const note = melodyNotes[currentNoteIndex];
+  const duration = melodyDurations[currentNoteIndex];
+  
+  const osc = audioContext.createOscillator();
+  osc.type = 'sine';  // صدای نرم و ملایم
+  osc.frequency.value = note;
+  
+  const noteGain = audioContext.createGain();
+  noteGain.gain.value = 0.12;
+  
+  osc.connect(noteGain);
+  noteGain.connect(musicGain);
+  
+  osc.start(now);
+  noteGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  osc.stop(now + duration);
+  
+  currentNoteIndex = (currentNoteIndex + 1) % melodyNotes.length;
+  
+  // زمان نت بعدی
+  const nextTime = now + duration;
+  const timeUntilNext = Math.max(0, (nextTime - audioContext.currentTime)) * 1000;
+  setTimeout(playNextNote, timeUntilNext);
+}
+
+function startMusic() {
+  if (!audioContext) {
+    initAudio();
+  }
+  if (audioContext.state === 'suspended') {
+    audioContext.resume().then(() => {
+      isMusicLooping = true;
+      currentNoteIndex = 0;
+      playNextNote();
+      isMusicPlaying = true;
+      document.getElementById("musicToggleBtn").innerHTML = "🎵";
+    });
+  } else if (!isMusicLooping) {
+    isMusicLooping = true;
+    currentNoteIndex = 0;
+    playNextNote();
+    isMusicPlaying = true;
+    document.getElementById("musicToggleBtn").innerHTML = "🎵";
+  }
+}
+
+function stopMusic() {
+  isMusicLooping = false;
+  isMusicPlaying = false;
+  document.getElementById("musicToggleBtn").innerHTML = "🔇";
+}
+
+function toggleMusic() {
+  if (isMusicPlaying) {
+    stopMusic();
+  } else {
+    startMusic();
+  }
+}
+
+// فعال کردن موسیقی با اولین کلیک کاربر (به دلیل محدودیت مرورگرها)
+function enableMusicOnFirstInteraction() {
+  if (!isMusicPlaying && audioContext && audioContext.state === 'suspended') {
+    startMusic();
+  }
+  document.removeEventListener('click', enableMusicOnFirstInteraction);
+  document.removeEventListener('touchstart', enableMusicOnFirstInteraction);
+}
+
+// ========== منطق بازی ==========
 const questionsList = [
   { text: "🐜 مورچه و شته 🐞", answer: "همیاری" },
   { text: "🐝 زنبور و گل 🌸", answer: "همیاری" },
@@ -200,7 +338,7 @@ let shuffled = [];
 let currentIndex = 0;
 let totalScore = 0;
 let waiting = false;
-let questionLocked = false;  // اگر یک بار اشتباه جواب داد، این سوال قفل می‌شود
+let questionLocked = false;
 
 const goodMsgs = ["آفرین ✨", "احسنت 🌟", "عالی بود 🎉"];
 const badMsgs = ["دوباره فکر کن 💭", "دقت کن 🎯", "یک بار دیگر تلاش کن 🔄"];
@@ -272,7 +410,6 @@ function onAnswer(selected, btn) {
   document.getElementById("btn3").disabled = true;
 
   if (selected === correctAns) {
-    // ===== پاسخ صحیح =====
     if (!questionLocked) {
       totalScore++;
       document.getElementById("scoreVal").innerText = totalScore;
@@ -293,7 +430,6 @@ function onAnswer(selected, btn) {
     }, 900);
 
   } else {
-    // ===== پاسخ اشتباه =====
     const badMsg = badMsgs[Math.floor(Math.random() * badMsgs.length)];
     msgDiv.innerHTML = `❌ ${badMsg}<br>📖 دوباره تلاش کن!`;
     msgDiv.style.background = "#fee2e2";
@@ -368,11 +504,25 @@ function startGame() {
   showQuestion();
 }
 
-document.getElementById("startBtn").onclick = startGame;
-document.getElementById("restartBtn").onclick = startGame;
+// راه‌اندازی
+document.getElementById("startBtn").onclick = () => {
+  startGame();
+  enableMusicOnFirstInteraction();
+};
+document.getElementById("restartBtn").onclick = () => {
+  startGame();
+  enableMusicOnFirstInteraction();
+};
 document.getElementById("btn1").onclick = () => onAnswer("همیاری", document.getElementById("btn1"));
 document.getElementById("btn2").onclick = () => onAnswer("همسفرگی", document.getElementById("btn2"));
 document.getElementById("btn3").onclick = () => onAnswer("انگلی", document.getElementById("btn3"));
+
+document.getElementById("musicToggleBtn").onclick = toggleMusic;
+
+// آماده‌سازی صدا
+initAudio();
+document.addEventListener('click', enableMusicOnFirstInteraction);
+document.addEventListener('touchstart', enableMusicOnFirstInteraction);
 </script>
 </body>
 </html>
