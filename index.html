@@ -36,6 +36,17 @@ body {
   display: none;
 }
 
+.school-name {
+  background: #e0f2fe;
+  padding: 8px 20px;
+  border-radius: 50px;
+  display: inline-block;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: #1e3a5f;
+}
+
 h1 {
   font-size: 2rem;
   margin-bottom: 10px;
@@ -143,6 +154,7 @@ h1 {
 
 <!-- صفحه شروع -->
 <div id="startPage" class="card">
+  <div class="school-name">🏫 مدرسه فرزانگان ۱ شهریار</div>
   <h1>زیست‌یار</h1>
   <div class="designer">✨ طراح: خانم معصومه مرتجایی</div>
   <p>شرکت‌کننده گرامی</p>
@@ -188,7 +200,7 @@ let shuffled = [];
 let currentIndex = 0;
 let totalScore = 0;
 let waiting = false;
-let questionLocked = false;  // اگر یک بار اشتباه جواب داد، این سوال قفل می‌شود و دیگر امتیازی ندارد
+let questionLocked = false;  // اگر یک بار اشتباه جواب داد، این سوال قفل می‌شود
 
 const goodMsgs = ["آفرین ✨", "احسنت 🌟", "عالی بود 🎉"];
 const badMsgs = ["دوباره فکر کن 💭", "دقت کن 🎯", "یک بار دیگر تلاش کن 🔄"];
@@ -244,7 +256,7 @@ function showQuestion() {
   document.getElementById("btn3").classList.remove("correct-glow", "wrong-glow");
 
   waiting = false;
-  questionLocked = false;  // هر سوال جدید، قفل باز است
+  questionLocked = false;
 }
 
 function onAnswer(selected, btn) {
@@ -261,7 +273,6 @@ function onAnswer(selected, btn) {
 
   if (selected === correctAns) {
     // ===== پاسخ صحیح =====
-    // فقط اگر قبلاً این سوال را اشتباه نگفته باشد، امتیاز می‌گیرد
     if (!questionLocked) {
       totalScore++;
       document.getElementById("scoreVal").innerText = totalScore;
@@ -290,7 +301,6 @@ function onAnswer(selected, btn) {
 
     btn.classList.add("wrong-glow");
 
-    // اگر اولین بار است که اشتباه می‌گوید، یک امتیاز کم می‌شود
     if (!questionLocked) {
       questionLocked = true;
       totalScore--;
@@ -300,7 +310,6 @@ function onAnswer(selected, btn) {
     setTimeout(() => {
       btn.classList.remove("wrong-glow");
 
-      // دکمه‌ها را دوباره فعال کن تا دوباره تلاش کند
       document.getElementById("btn1").disabled = false;
       document.getElementById("btn2").disabled = false;
       document.getElementById("btn3").disabled = false;
