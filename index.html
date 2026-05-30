@@ -3,134 +3,88 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>زیست‌یار - همزیستی</title>
+<title>زیست‌یار</title>
 
 <style>
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Tahoma,sans-serif;
+font-family:tahoma,sans-serif;
 }
 
 body{
-background:linear-gradient(135deg,#dff9fb,#c7ecee);
+background:linear-gradient(135deg,#0b1f3a,#0f766e);
 min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-padding:15px;
-overflow:hidden;
+padding:20px;
 }
 
-.container{
-background:white;
+.card{
 width:100%;
-max-width:700px;
-padding:25px;
-border-radius:20px;
-box-shadow:0 8px 20px rgba(0,0,0,.15);
+max-width:900px;
+background:white;
+color:#111;
+padding:30px;
+border-radius:25px;
 text-align:center;
-position:relative;
+box-shadow:0 15px 40px rgba(0,0,0,.3);
 }
 
-h1{
-color:#2d3436;
-margin-bottom:10px;
-}
-
-.designer{
-color:#636e72;
-margin-bottom:20px;
-font-size:14px;
-}
-
-.progress{
-margin-bottom:20px;
-font-weight:bold;
-color:#0984e3;
+.hidden{
+display:none;
 }
 
 .question{
-font-size:24px;
-line-height:1.8;
-margin-bottom:25px;
-color:#2d3436;
+font-size:34px;
+font-weight:bold;
+margin:25px 0;
 }
 
 .btn{
-display:block;
 width:100%;
-margin:10px 0;
-padding:15px;
+padding:18px;
+margin-top:10px;
 border:none;
-border-radius:12px;
-font-size:18px;
+border-radius:15px;
+font-size:22px;
 cursor:pointer;
-transition:.3s;
-background:#74b9ff;
+background:#0ea5e9;
 color:white;
 }
 
 .btn:hover{
-transform:scale(1.03);
-background:#0984e3;
+opacity:.9;
 }
 
 .message{
-margin-top:15px;
-font-size:20px;
+min-height:50px;
+font-size:26px;
 font-weight:bold;
-color:#27ae60;
-min-height:40px;
-}
-
-.result{
-display:none;
+margin:15px 0;
 }
 
 .medal{
 font-size:90px;
-margin:20px 0;
-}
-
-.score{
-font-size:28px;
-margin:10px;
-}
-
-.again{
-background:#00b894;
 }
 
 .confetti{
 position:fixed;
-width:12px;
-height:12px;
+font-size:28px;
 pointer-events:none;
-animation:fall linear forwards;
+z-index:9999;
 }
 
-@keyframes fall{
-0%{
-transform:translateY(-20px) rotate(0deg);
-opacity:1;
-}
-100%{
-transform:translateY(110vh) rotate(720deg);
-opacity:0;
-}
-}
-
-@media(max-width:600px){
+@media(max-width:700px){
 
 .question{
-font-size:20px;
+font-size:26px;
 }
 
 .btn{
-font-size:16px;
-padding:14px;
+font-size:18px;
 }
 
 }
@@ -139,226 +93,241 @@ padding:14px;
 
 <body>
 
-<div class="container">
+<div id="startPage" class="card">
 
-<div id="game">
+<h1>🧬 زیست‌یار</h1>
 
-<h1>زیست‌یار</h1>
-<div class="designer">طراح: خانم معصومه مرتجایی</div>
+<h3>طراح: خانم معصومه مرتجایی</h3>
 
-<div class="progress" id="progress"></div>
+<br>
 
-<div class="question" id="question"></div>
+<p>
+نوع رابطه همزیستی موجودات زیر را مشخص کنید.
+</p>
 
-<button class="btn" onclick="checkAnswer('همیاری')">همیاری</button>
-<button class="btn" onclick="checkAnswer('همسفرگی')">همسفرگی</button>
-<button class="btn" onclick="checkAnswer('انگلی')">انگلی</button>
+<br>
 
-<div class="message" id="message"></div>
-
-</div>
-
-<div class="result" id="result">
-<h1>پایان بازی</h1>
-
-<div class="medal" id="medal"></div>
-
-<div class="score" id="finalScore"></div>
-
-<button class="btn again" onclick="location.reload()">
-بازی دوباره
+<button class="btn" onclick="startGame()">
+🎮 شروع بازی
 </button>
+
 </div>
+
+<div id="gamePage" class="card hidden">
+
+<div>
+سؤال
+<span id="current">1</span>
+از 10
+</div>
+
+<div id="msg" class="message"></div>
+
+<div id="question" class="question"></div>
+
+<button class="btn" onclick="answer('همیاری')">
+🤝 همیاری
+</button>
+
+<button class="btn" onclick="answer('همسفرگی')">
+🍽️ همسفرگی
+</button>
+
+<button class="btn" onclick="answer('انگلی')">
+🪱 انگلی
+</button>
+
+<br>
+
+<h3>
+⭐ امتیاز:
+<span id="score">0</span>
+</h3>
+
+</div>
+
+<div id="finishPage" class="card hidden">
+
+<div id="medal" class="medal"></div>
+
+<h1>🎉 پایان بازی</h1>
+
+<br>
+
+<p id="resultText"></p>
+
+<br>
+
+<h3>طراح: خانم معصومه مرتجایی</h3>
 
 </div>
 
 <script>
 
-let questions = [
+const questions=[
 
-{
-q:"زنبور و گل از یکدیگر سود می‌برند.",
-a:"همیاری"
-},
-
-{
-q:"ماهی بادکنکی کنار خیار دریایی زندگی می‌کند و فقط ماهی سود می‌برد.",
-a:"همسفرگی"
-},
-
-{
-q:"کرم کدو در روده انسان زندگی می‌کند.",
-a:"انگلی"
-},
-
-{
-q:"گاو و باکتری‌های شکمبه هر دو سود می‌برند.",
-a:"همیاری"
-},
-
-{
-q:"ماهی ریمورا به کوسه می‌چسبد و از باقی‌مانده غذا استفاده می‌کند.",
-a:"همسفرگی"
-},
-
-{
-q:"شپش روی بدن انسان زندگی می‌کند.",
-a:"انگلی"
-},
-
-{
-q:"قارچ و جلبک در گلسنگ با هم همکاری دارند.",
-a:"همیاری"
-},
-
-{
-q:"پرنده روی درخت لانه می‌سازد و درخت آسیب نمی‌بیند.",
-a:"همسفرگی"
-},
-
-{
-q:"کنه از خون بدن جانوران تغذیه می‌کند.",
-a:"انگلی"
-},
-
-{
-q:"خرچنگ و شقایق دریایی هر دو از حضور یکدیگر سود می‌برند.",
-a:"همیاری"
-}
+["مورچه و شته","همیاری"],
+["زنبور و گل","همیاری"],
+["میگوی تمیزکننده و کوسه","همیاری"],
+["گلسنگ","همیاری"],
+["باکتری روده و انسان","همیاری"],
+["شیر و کفتار","همسفرگی"],
+["ماهی کوچک و کوسه","همسفرگی"],
+["لاک‌پشت و جلبک","همسفرگی"],
+["کرمک و انسان","انگلی"],
+["کنه و گاو","انگلی"]
 
 ];
 
 questions.sort(()=>Math.random()-0.5);
 
-const messages = [
-"آفرین 🌟",
-"بسیار عالی 👏",
-"درست گفتی 🎉",
-"احسنت 💎",
-"عالی بود 🌈",
-"آفرین دانشمند کوچولو 🧠"
+const praise=[
+
+"🌟 آفرین",
+"👏 احسنت",
+"🎉 عالی بود",
+"⭐ خیلی خوب گفتی",
+"🏆 درست است"
+
 ];
 
-let current=0;
+let index=0;
 let score=0;
 
-const questionEl=document.getElementById("question");
-const progressEl=document.getElementById("progress");
-const messageEl=document.getElementById("message");
-
-function loadQuestion(){
-
-messageEl.innerHTML="";
-
-progressEl.innerHTML=
-`سؤال ${current+1} از ${questions.length}`;
-
-questionEl.innerHTML=
-questions[current].q;
-
-}
-
-function checkAnswer(answer){
-
-if(answer===questions[current].a){
-
-score++;
-
-messageEl.innerHTML=
-messages[Math.floor(Math.random()*messages.length)];
-
-createConfetti(60);
-
-setTimeout(()=>{
-
-current++;
-
-if(current<questions.length){
-loadQuestion();
-}else{
-showResult();
-}
-
-},1200);
-
-}else{
-
-messageEl.style.color="#e74c3c";
-messageEl.innerHTML="❌ دوباره تلاش کن";
-
-setTimeout(()=>{
-messageEl.style.color="#27ae60";
-},1000);
-
-}
-
-}
-
-function showResult(){
-
-document.getElementById("game").style.display="none";
-document.getElementById("result").style.display="block";
-
-let medal="🥉";
-let title="مدال برنز";
-
-if(score>=8){
-medal="🥇";
-title="مدال طلا";
-}
-else if(score>=5){
-medal="🥈";
-title="مدال نقره";
-}
-
-document.getElementById("medal").innerHTML=medal;
-
-document.getElementById("finalScore").innerHTML=
-`${title}<br><br>امتیاز: ${score} از ${questions.length}`;
-
-createConfetti(300);
-
-}
-
-function createConfetti(count){
-
-const colors=[
-"#ff7675",
-"#fdcb6e",
-"#55efc4",
-"#74b9ff",
-"#a29bfe",
-"#e84393"
-];
+function confetti(count){
 
 for(let i=0;i<count;i++){
 
 const c=document.createElement("div");
 
-c.classList.add("confetti");
+c.className="confetti";
 
-c.style.background=
-colors[Math.floor(Math.random()*colors.length)];
+c.innerHTML=["🎊","🎉","✨"][Math.floor(Math.random()*3)];
 
 c.style.left=Math.random()*100+"vw";
 
-c.style.animationDuration=
-(2+Math.random()*3)+"s";
-
-c.style.width=(8+Math.random()*10)+"px";
-c.style.height=(8+Math.random()*10)+"px";
+c.style.top="-30px";
 
 document.body.appendChild(c);
 
-setTimeout(()=>{
+let y=-30;
+
+const fall=setInterval(()=>{
+
+y+=8;
+
+c.style.top=y+"px";
+
+if(y>window.innerHeight){
+
+clearInterval(fall);
+
 c.remove();
-},5000);
+
+}
+
+},20);
 
 }
 
 }
 
-loadQuestion();
+function startGame(){
+
+document.getElementById("startPage").classList.add("hidden");
+
+document.getElementById("gamePage").classList.remove("hidden");
+
+showQuestion();
+
+}
+
+function showQuestion(){
+
+document.getElementById("current").textContent=index+1;
+
+document.getElementById("question").textContent=
+questions[index][0];
+
+document.getElementById("msg").textContent="";
+
+}
+
+function answer(choice){
+
+const correct=questions[index][1];
+
+if(choice===correct){
+
+score++;
+
+document.getElementById("score").textContent=score;
+
+document.getElementById("msg").style.color="green";
+
+document.getElementById("msg").textContent=
+praise[Math.floor(Math.random()*praise.length)];
+
+confetti(30);
+
+setTimeout(()=>{
+
+index++;
+
+if(index>=questions.length){
+
+finishGame();
+
+}else{
+
+showQuestion();
+
+}
+
+},1000);
+
+}else{
+
+document.getElementById("msg").style.color="red";
+
+document.getElementById("msg").textContent=
+"❌ پاسخ اشتباه است، دوباره تلاش کن.";
+
+}
+
+}
+
+function finishGame(){
+
+document.getElementById("gamePage")
+.classList.add("hidden");
+
+document.getElementById("finishPage")
+.classList.remove("hidden");
+
+confetti(120);
+
+let medal="🥉";
+
+if(score>=8){
+
+medal="🥇";
+
+}else if(score>=5){
+
+medal="🥈";
+
+}
+
+document.getElementById("medal").textContent=medal;
+
+document.getElementById("resultText").innerHTML=
+
+"🌟 شما موفق شدید "
++ score +
+" امتیاز از 10 کسب کنید.";
+
+}
 
 </script>
 
