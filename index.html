@@ -1,25 +1,24 @@
-```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>زیست‌یار</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;800&display=swap" rel="stylesheet">
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Vazirmatn',sans-serif;
-}
 
 body{
+margin:0;
+font-family:Vazirmatn,sans-serif;
 background:linear-gradient(135deg,#0b1f3a,#0f766e);
+color:white;
+overflow:hidden;
+}
+
+.screen{
 min-height:100vh;
-color:#fff;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -27,198 +26,164 @@ padding:20px;
 }
 
 .card{
-width:100%;
-max-width:900px;
 background:white;
 color:#111;
-border-radius:30px;
+max-width:800px;
+width:100%;
 padding:30px;
-box-shadow:0 20px 50px rgba(0,0,0,.3);
+border-radius:25px;
 text-align:center;
+box-shadow:0 20px 60px rgba(0,0,0,.3);
 }
 
 .hidden{
 display:none;
 }
 
-h1{
-margin-bottom:15px;
-}
-
-h2{
-margin-bottom:10px;
-}
-
-.btn{
-width:100%;
-padding:18px;
-margin-top:12px;
-font-size:22px;
+button{
+font-family:inherit;
+padding:14px 25px;
 border:none;
-border-radius:16px;
+border-radius:14px;
+font-size:18px;
 cursor:pointer;
-transition:.3s;
-font-weight:700;
+margin:8px;
 }
 
-.btn:hover{
-transform:scale(1.03);
+.startBtn{
+background:#06b6d4;
+color:white;
 }
 
 .option{
+display:block;
+width:100%;
+margin:12px 0;
 background:#0ea5e9;
 color:white;
 }
 
 .option:hover{
-background:#0284c7;
+transform:scale(1.02);
+}
+
+#question{
+font-size:34px;
+margin:30px 0;
+font-weight:800;
+}
+
+#message{
+font-size:26px;
+height:50px;
+font-weight:bold;
 }
 
 .correct{
-background:#22c55e !important;
+color:#16a34a;
 }
 
 .wrong{
-background:#ef4444 !important;
-}
-
-.message{
-font-size:26px;
-font-weight:800;
-margin:20px 0;
-min-height:45px;
+color:#dc2626;
 }
 
 .progress{
-margin-top:10px;
-font-size:20px;
+height:18px;
+background:#ddd;
+border-radius:99px;
+overflow:hidden;
+margin:20px 0;
 }
 
-.question{
-font-size:38px;
-font-weight:800;
-margin:30px 0;
+.bar{
+height:100%;
+width:0;
+background:#22c55e;
+transition:.4s;
 }
 
 .medal{
 font-size:90px;
-margin-bottom:20px;
 }
 
-.dna{
-font-size:70px;
-opacity:.15;
+.confetti{
 position:fixed;
-animation:float 8s infinite alternate;
+width:12px;
+height:12px;
+top:-20px;
+animation:fall 3s linear forwards;
 }
 
-.dna1{
-top:10%;
-left:5%;
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(720deg);
+opacity:0;
+}
 }
 
-.dna2{
-bottom:10%;
-right:5%;
-}
-
-@keyframes float{
-from{transform:translateY(0)}
-to{transform:translateY(-40px)}
-}
-
-@media(max-width:700px){
-
-.question{
-font-size:28px;
-}
-
-.btn{
-font-size:20px;
-}
-
-}
 </style>
 </head>
-
 <body>
 
-<div class="dna dna1">🧬</div>
-<div class="dna dna2">🧬</div>
-
-<!-- صفحه شروع -->
-
-<div id="startPage" class="card">
-
+<div id="intro" class="screen">
+<div class="card">
 <h1>🧬 زیست‌یار</h1>
 
 <h2>✨ طراح: خانم معصومه مرتجایی</h2>
 
-<br>
-
 <p style="font-size:22px">
-شرکت‌کننده گرامی
-<br><br>
-نوع رابطه همزیستی موجودات زیر را مشخص کنید.
+شرکت‌کننده گرامی، نوع رابطه همزیستی موجودات زیر را مشخص کنید.
 </p>
 
-<br><br>
-
-<button class="btn option" onclick="startGame()">
-🎮 شروع بازی
+<button class="startBtn" onclick="startGame()">
+شروع بازی
 </button>
 
 </div>
-
-<!-- صفحه بازی -->
-
-<div id="gamePage" class="card hidden">
-
-<div class="progress">
-سؤال <span id="current">1</span> از 10
 </div>
 
-<div id="msg" class="message"></div>
+<div id="game" class="screen hidden">
+<div class="card">
 
-<div id="question" class="question"></div>
+<h2>
+سؤال <span id="current">1</span> از 10
+</h2>
 
-<button class="btn option" onclick="answer('همیاری',this)">
+<div class="progress">
+<div id="bar" class="bar"></div>
+</div>
+
+<div id="question"></div>
+
+<div id="message"></div>
+
+<button class="option" onclick="checkAnswer('همیاری')">
 🤝 همیاری
 </button>
 
-<button class="btn option" onclick="answer('همسفرگی',this)">
+<button class="option" onclick="checkAnswer('همسفرگی')">
 🍽️ همسفرگی
 </button>
 
-<button class="btn option" onclick="answer('انگلی',this)">
+<button class="option" onclick="checkAnswer('انگلی')">
 🪱 انگلی
 </button>
 
-<br><br>
-
-<div style="font-size:22px">
-⭐ امتیاز:
-<span id="score">0</span>
+</div>
 </div>
 
+<div id="finish" class="screen hidden">
+<div class="card">
+
+<div id="medal" class="medal">
+🥇
 </div>
 
-<!-- پایان -->
-
-<div id="finishPage" class="card hidden">
-
-<div id="medal" class="medal">🥇</div>
-
-<h1>🎉 تبریک</h1>
-
-<br>
+<h1>🏆 پایان بازی</h1>
 
 <p id="resultText" style="font-size:24px"></p>
 
-<br>
-
-<h2>✨ طراح: خانم معصومه مرتجایی</h2>
-
+</div>
 </div>
 
 <script>
@@ -230,21 +195,38 @@ const questions=[
 ["میگوی تمیزکننده و کوسه","همیاری"],
 ["گلسنگ","همیاری"],
 ["باکتری روده و انسان","همیاری"],
+
 ["شیر و کفتار","همسفرگی"],
 ["ماهی کوچک و کوسه","همسفرگی"],
 ["لاک‌پشت و جلبک","همسفرگی"],
+
 ["کرمک و انسان","انگلی"],
 ["کنه و گاو","انگلی"]
 
 ];
 
+questions.sort(()=>Math.random()-0.5);
+
 let index=0;
 let score=0;
 
+const praises=[
+"🌟 آفرین",
+"👏 احسنت",
+"🎉 خیلی خوب گفتی",
+"⭐ عالی بود"
+];
+
+const errors=[
+"⚠️ دقت کن",
+"❌ متأسفم اشتباه بود",
+"🤔 دوباره فکر کن"
+];
+
 function startGame(){
 
-document.getElementById("startPage").classList.add("hidden");
-document.getElementById("gamePage").classList.remove("hidden");
+intro.classList.add("hidden");
+game.classList.remove("hidden");
 
 showQuestion();
 
@@ -252,42 +234,36 @@ showQuestion();
 
 function showQuestion(){
 
-document.getElementById("current").textContent=index+1;
-document.getElementById("question").textContent=
+document.getElementById("question").innerHTML=
 questions[index][0];
 
-document.getElementById("msg").textContent="";
+document.getElementById("current").textContent=
+index+1;
+
+document.getElementById("message").innerHTML="";
 
 }
 
-function answer(choice,btn){
+function checkAnswer(answer){
 
-const correct=questions[index][1];
+const correct=
+questions[index][1];
 
-if(choice===correct){
-
-const praise=[
-"🌟 آفرین",
-"👏 احسنت",
-"🎉 عالی بود",
-"⭐ بسیار خوب",
-"🏆 درست است"
-];
-
-document.getElementById("msg").style.color="#16a34a";
-
-document.getElementById("msg").textContent=
-praise[Math.floor(Math.random()*praise.length)];
-
-btn.classList.add("correct");
+if(answer===correct){
 
 score++;
 
-document.getElementById("score").textContent=score;
+document.getElementById("message").className="correct";
+
+document.getElementById("message").innerHTML=
+praises[Math.floor(Math.random()*praises.length)];
+
+smallConfetti();
+
+document.getElementById("bar").style.width=
+(score/10*100)+"%";
 
 setTimeout(()=>{
-
-btn.classList.remove("correct");
 
 index++;
 
@@ -301,22 +277,14 @@ showQuestion();
 
 }
 
-},1000);
+},1200);
 
 }else{
 
-document.getElementById("msg").style.color="#dc2626";
+document.getElementById("message").className="wrong";
 
-document.getElementById("msg").textContent=
-"❌ متأسفم، اشتباه بود. دوباره تلاش کن.";
-
-btn.classList.add("wrong");
-
-setTimeout(()=>{
-
-btn.classList.remove("wrong");
-
-},800);
+document.getElementById("message").innerHTML=
+errors[Math.floor(Math.random()*errors.length)];
 
 }
 
@@ -324,11 +292,8 @@ btn.classList.remove("wrong");
 
 function finishGame(){
 
-document.getElementById("gamePage")
-.classList.add("hidden");
-
-document.getElementById("finishPage")
-.classList.remove("hidden");
+game.classList.add("hidden");
+finish.classList.remove("hidden");
 
 let medal="🥉";
 
@@ -336,19 +301,66 @@ if(score>=7) medal="🥈";
 
 if(score===10) medal="🥇";
 
-document.getElementById("medal").textContent=medal;
+document.getElementById("medal").textContent=
+medal;
+
+let msg="";
+
+if(score===10){
+
+msg="🌟 آفرین عزیزم! این مبحث را خیلی خوب بلد بودی یا به خوبی یاد گرفتی.";
+
+}else if(score>=7){
+
+msg="👏 خیلی خوب بود! فقط کمی تمرین بیشتر لازم داری.";
+
+}else{
+
+msg="📚 تلاش خوبی داشتی. دوباره بازی کن تا حرفه‌ای‌تر شوی.";
+
+}
 
 document.getElementById("resultText").innerHTML=
+"امتیاز شما: "+score+" از 10<br><br>"+msg;
 
-"🌟 شما موفق شدید "
-+
-score
-+
-" امتیاز از 10 کسب کنید."
-+
-"<br><br>"
-+
-"روابط همزیستی را با موفقیت بررسی کردید.";
+bigConfetti();
+
+}
+
+function smallConfetti(){
+
+for(let i=0;i<20;i++){
+
+createPiece();
+
+}
+
+}
+
+function bigConfetti(){
+
+for(let i=0;i<120;i++){
+
+setTimeout(createPiece,i*20);
+
+}
+
+}
+
+function createPiece(){
+
+const c=document.createElement("div");
+
+c.className="confetti";
+
+c.style.left=Math.random()*100+"vw";
+
+c.style.background=
+`hsl(${Math.random()*360},100%,50%)`;
+
+document.body.appendChild(c);
+
+setTimeout(()=>c.remove(),3000);
 
 }
 
@@ -356,4 +368,3 @@ score
 
 </body>
 </html>
-```
