@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>زیست‌یار</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Vazirmatn,sans-serif;background:linear-gradient(135deg,#081b33,#0f766e);color:#fff}
+.page{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.card{background:#fff;color:#111;max-width:1100px;width:100%;border-radius:24px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.hidden{display:none}.center{text-align:center}
+button,input{font-family:inherit}
+button{padding:12px 24px;border:none;border-radius:12px;background:#06b6d4;color:#fff;font-size:18px}
+input{padding:12px;border-radius:12px;border:1px solid #ccc}
+.wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.zone{background:#f8fafc;border:3px dashed #94a3b8;border-radius:16px;padding:10px;min-height:180px}
+.cards{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:20px}
+.item{width:180px;background:white;border-radius:16px;padding:12px;box-shadow:0 8px 20px rgba(0,0,0,.2);cursor:pointer;text-align:center}
+.selected{outline:4px solid #06b6d4}
+.ok{background:#dcfce7}
+.progress{height:14px;background:#ddd;border-radius:99px;overflow:hidden}
+.bar{height:100%;width:0;background:#22c55e}
+.medal{font-size:90px}
+@media(max-width:700px){.wrap{grid-template-columns:1fr}.item{width:145px}}
+</style>
+</head>
+<body>
+
+<div id="start" class="page">
+<div class="card center">
+<h1>🎮 زیست‌یار</h1>
+<h2>✨ طراح: خانم معصومه مرتجایی</h2>
+<h3>🏫 مدرسه فرزانگان ۱ شهریار</h3>
+<p>روی کارت لمس کنید سپس روی دسته صحیح بزنید.</p>
+<input id="student" placeholder="نام شرکت‌کننده">
+<br><br><button onclick="startGame()">شروع بازی</button>
+</div></div>
+
+<div id="game" class="page hidden">
+<div class="card">
+<div class="center">⭐ <span id="score">0</span>/8</div>
+<div class="progress"><div id="bar" class="bar"></div></div><br>
+<div class="wrap">
+<div class="zone" data-type="همیاری"><h3>🤝 همیاری</h3></div>
+<div class="zone" data-type="همسفرگی"><h3>🍽️ همسفرگی</h3></div>
+<div class="zone" data-type="انگلی"><h3>🪱 انگلی</h3></div>
+</div>
+<div id="cards" class="cards"></div>
+<div class="center" style="margin-top:20px"><button onclick="finishGame()">پایان بازی</button></div>
+</div></div>
+
+<div id="finish" class="page hidden">
+<div class="card center">
+<div id="medal" class="medal">🥇</div>
+<h1>🎉 تبریک</h1>
+<p id="final"></p>
+</div></div>
+
+<script>
+const data=[
+["🐜 مورچه و شته","همیاری"],["🐝 زنبور و گل","همیاری"],
+["🦐 میگوی تمیزکننده و کوسه","همیاری"],["🍃 گلسنگ","همیاری"],
+["🦠 باکتری روده و انسان","همیاری"],["🦁 شیر و کفتار","همسفرگی"],
+["🐟 ماهی کوچک و کوسه","همسفرگی"],["🪱 کرمک و انسان","انگلی"]
+];
+let score=0,name="",selected=null;
+data.sort(()=>Math.random()-0.5);
+const cards=document.getElementById("cards");
+
+data.forEach((x,i)=>{
+ let d=document.createElement("div");
+ d.className="item";
+ d.dataset.type=x[1];
+ d.innerHTML="<div style='font-size:46px'>"+x[0].split(" ")[0]+"</div><b>"+x[0]+"</b>";
+ d.onclick=()=>{
+   document.querySelectorAll(".item").forEach(a=>a.classList.remove("selected"));
+   d.classList.add("selected");
+   selected=d;
+ };
+ cards.appendChild(d);
+});
+
+document.querySelectorAll(".zone").forEach(z=>{
+ z.onclick=()=>{
+   if(!selected) return;
+   if(selected.dataset.type===z.dataset.type){
+      if(!selected.classList.contains("ok")){
+        score++;
+        scoreEl.textContent=score;
+        bar.style.width=(score/8*100)+"%";
+      }
+      selected.classList.remove("selected");
+      selected.classList.add("ok");
+      z.appendChild(selected);
+      selected=null;
+   }else{
+      alert("❌ پاسخ نادرست");
+   }
+ };
+});
+
+function startGame(){
+ name=document.getElementById("student").value||"شرکت‌کننده عزیز";
+ start.classList.add("hidden");
+ game.classList.remove("hidden");
+}
+function finishGame(){
+ game.classList.add("hidden");
+ finish.classList.remove("hidden");
+ medal.textContent=score==8?"🥇":score>=6?"🥈":"🥉";
+ final.innerHTML="🌟 "+name+"<br><br>امتیاز شما: "+score+" از 8<br><br>آفرین! با موفقیت بازی را به پایان رساندید.<br><br>✨ طراح: خانم معصومه مرتجایی<br>🏫 فرزانگان ۱ شهریار";
+}
+</script>
+</body></html>
