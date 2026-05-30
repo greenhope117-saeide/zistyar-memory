@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>زیست‌یار - بازی حافظه</title>
+<style>
+body{font-family:tahoma,sans-serif;margin:0;background:linear-gradient(135deg,#0b2447,#159895);color:#fff}
+.container{max-width:1000px;margin:auto;padding:20px}
+h1,h2{text-align:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
+.card{height:100px;cursor:pointer;position:relative;transform-style:preserve-3d;transition:.5s}
+.card.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:12px;padding:8px;backface-visibility:hidden;text-align:center}
+.front{background:#ffffff22;border:2px solid #fff}
+.back{background:#fff;color:#111;transform:rotateY(180deg)}
+.done .back{background:#9ef0a8}
+#finish{display:none;text-align:center;padding:30px}
+button{padding:10px 20px;border:none;border-radius:10px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🧬 زیست‌یار - بازی حافظه</h1>
+<h2>طراح: خانم معصومه مرتجایی</h2>
+<p style="text-align:center">کارت رابطه و کارت موجود زنده متناظر را پیدا کنید.</p>
+<div style="text-align:center">امتیاز: <span id="score">0</span>/10</div><br>
+<div id="game" class="grid"></div>
+<div id="finish">
+<h1>🎉 آفرین!</h1>
+<div id="medal" style="font-size:80px">🥇</div>
+<p>شما بازی را کامل کردید.</p>
+</div>
+</div>
+<script>
+const pairs=[
+["مورچه و شته","همیاری"],
+["زنبور و گل","همیاری"],
+["میگوی تمیزکننده و کوسه","همیاری"],
+["گلسنگ","همیاری"],
+["باکتری روده و انسان","همیاری"],
+["شیر و کفتار","همسفرگی"],
+["ماهی کوچک و کوسه","همسفرگی"],
+["لاک‌پشت و جلبک","همسفرگی"],
+["کرمک و انسان","انگلی"],
+["کنه و گاو","انگلی"]
+];
+let cards=[];
+pairs.forEach((p,i)=>{
+ cards.push({id:i,text:p[0],pair:i});
+ cards.push({id:i+100,text:p[1],pair:i});
+});
+cards.sort(()=>Math.random()-0.5);
+
+const game=document.getElementById("game");
+let first=null,lock=false,score=0;
+
+cards.forEach(c=>{
+ let d=document.createElement("div");
+ d.className="card";
+ d.dataset.pair=c.pair;
+ d.innerHTML=`<div class="face front">🧬</div><div class="face back">${c.text}</div>`;
+ d.onclick=()=>{
+  if(lock||d.classList.contains("done")||d===first)return;
+  d.classList.add("flip");
+  if(!first){first=d;return;}
+  lock=true;
+  if(first.dataset.pair===d.dataset.pair){
+    first.classList.add("done");
+    d.classList.add("done");
+    score++;
+    document.getElementById("score").textContent=score;
+    first=null;lock=false;
+    if(score===10){
+      document.getElementById("finish").style.display="block";
+    }
+  }else{
+    setTimeout(()=>{
+      first.classList.remove("flip");
+      d.classList.remove("flip");
+      first=null;lock=false;
+    },900);
+  }
+ };
+ game.appendChild(d);
+});
+</script>
+</body>
+</html>
