@@ -26,7 +26,6 @@ body {
   overflow-x: hidden;
 }
 
-/* پس‌زمینه متحرک موج‌ها */
 body::before {
   content: '';
   position: fixed;
@@ -238,7 +237,6 @@ h2 {
   transition: all 0.3s;
 }
 
-/* نوار پیشرفت */
 .progress-container {
   margin-top: 10px;
   display: flex;
@@ -348,7 +346,6 @@ h2 {
   }
 }
 
-/* افکت شمارش معکوس */
 .countdown {
   position: fixed;
   top: 50%;
@@ -413,11 +410,10 @@ h2 {
 <div class="dna-bg dna1">🧬</div>
 <div class="dna-bg dna2">🧬</div>
 
-<!-- صفحه شروع -->
 <div id="startPage" class="card">
   <div class="sampad-logo">
     <div class="sampad-icon">
-      <img src="sampad-logo.png" alt="سمپاد" onerror="this.src='https://placehold.co/100x100/1e3a5f/ffd700?text=🎓'">
+      <img src="sampad-logo.png.jpg" alt="سمپاد" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\"width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:3rem;\">🎓</div>'">
     </div>
     <div class="school-name">🏫 مدرسه فرزانگان ۱ شهریار</div>
   </div>
@@ -436,7 +432,6 @@ h2 {
   </button>
 </div>
 
-<!-- صفحه بازی -->
 <div id="gamePage" class="card hidden">
   <div class="progress-container">
     <div class="progress-text">📖 سؤال <span id="current">1</span> از <span id="total">10</span></div>
@@ -461,7 +456,6 @@ h2 {
   </div>
 </div>
 
-<!-- صفحه پایان -->
 <div id="finishPage" class="card hidden">
   <div id="medal" class="medal">🥇</div>
   <h1>🎉 پایان بازی</h1>
@@ -492,6 +486,7 @@ let currentIndex = 0;
 let currentScore = 0;
 let waitingForNext = false;
 let currentButtons = [];
+let questionAnswered = false;
 
 const correctMessages = ["آفرین ✨", "احسنت 🌟", "عالی بود 🎉"];
 const wrongMessages = ["دوباره فکر کن 💭", "دقت کن 🎯", "یک بار دیگر تلاش کن 🔄", "کمی بیشتر فکر کن 🤔"];
@@ -532,7 +527,7 @@ function showCountdown(callback) {
 }
 
 function updateProgressBar() {
-  const percent = ((currentIndex) / shuffledQuestions.length) * 100;
+  const percent = (currentIndex / shuffledQuestions.length) * 100;
   document.getElementById('progressBar').style.width = percent + '%';
 }
 
@@ -556,16 +551,19 @@ function loadCurrentQuestion() {
     btn.disabled = false;
   });
   waitingForNext = false;
+  questionAnswered = false;
 }
 
 function onAnswer(choice, btnElement) {
   if (waitingForNext) return;
+  if (questionAnswered) return;
   if (!shuffledQuestions[currentIndex]) return;
 
   const correctAnswer = shuffledQuestions[currentIndex].answer;
   const msgDiv = document.getElementById("msg");
 
   waitingForNext = true;
+  questionAnswered = true;
   currentButtons.forEach(btn => { btn.disabled = true; });
 
   if (choice === correctAnswer) {
@@ -583,11 +581,7 @@ function onAnswer(choice, btnElement) {
     showCountdown(() => {
       btnElement.classList.remove("correct-effect");
       currentIndex++;
-      if (currentIndex >= shuffledQuestions.length) {
-        finishGame();
-      } else {
-        loadCurrentQuestion();
-      }
+      loadCurrentQuestion();
     });
     
   } else {
@@ -602,6 +596,7 @@ function onAnswer(choice, btnElement) {
       btnElement.classList.remove("wrong-effect");
       currentButtons.forEach(btn => { btn.disabled = false; });
       waitingForNext = false;
+      questionAnswered = false;
       setTimeout(() => {
         if (msgDiv.innerHTML.includes("❌")) {
           msgDiv.innerHTML = "";
@@ -625,6 +620,7 @@ function initGame() {
   currentIndex = 0;
   currentScore = 0;
   waitingForNext = false;
+  questionAnswered = false;
   
   document.getElementById("score").textContent = "0";
   document.getElementById("total").textContent = shuffledQuestions.length;
@@ -710,5 +706,3 @@ document.addEventListener("DOMContentLoaded", function() {
 </body>
 </html>
 ```
-
----
