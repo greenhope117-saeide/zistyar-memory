@@ -1,519 +1,426 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>زیست‌یار | بازی همزیستی</title>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>زیست‌یار | بازی همزیستی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      background: linear-gradient(135deg, #0b1f3a, #0f766e);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      font-family: 'Vazirmatn', sans-serif;
-    }
+body {
+  background: linear-gradient(135deg, #0b1f3a, #0f766e);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: 'Vazirmatn', sans-serif;
+}
 
-    /* کارت اصلی */
-    .card {
-      width: 100%;
-      max-width: 750px;
-      background: #ffffff;
-      border-radius: 40px;
-      padding: 30px 25px;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      transition: all 0.2s ease;
-    }
+.card {
+  width: 100%;
+  max-width: 700px;
+  background: white;
+  border-radius: 40px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  text-align: center;
+}
 
-    /* مخفی کردن صفحات */
-    .hidden {
-      display: none;
-    }
+.hidden {
+  display: none;
+}
 
-    /* تیترها */
-    h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 8px;
-      background: linear-gradient(135deg, #0b1f3a, #0f766e);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
+/* لوگو */
+.logo-circle {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #1e3a5f, #0f766e);
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
 
-    h2 {
-      font-size: 1rem;
-      font-weight: 500;
-      color: #0f766e;
-      margin-bottom: 20px;
-    }
+.logo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    /* لوگو */
-    .logo-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+.school-name {
+  background: #e0f2fe;
+  padding: 8px 20px;
+  border-radius: 50px;
+  display: inline-block;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: #1e3a5f;
+}
 
-    .logo-circle {
-      width: 100px;
-      height: 100px;
-      background: linear-gradient(135deg, #1e3a5f, #0f766e);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      margin-bottom: 12px;
-    }
+/* عنوان با DNA */
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #0b1f3a, #0f766e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 
-    .logo-circle img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+.dna-icon {
+  font-size: 2rem;
+}
 
-    .school-text {
-      background: #e0f2fe;
-      padding: 8px 22px;
-      border-radius: 40px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: #1e3a5f;
-      display: inline-block;
-    }
+.designer {
+  font-size: 0.9rem;
+  color: #0f766e;
+  margin-bottom: 15px;
+}
 
-    /* دکمه‌ها */
-    .btn {
-      width: 100%;
-      padding: 14px;
-      margin-top: 12px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      border: none;
-      border-radius: 28px;
-      cursor: pointer;
-      background: #0ea5e9;
-      color: white;
-      transition: 0.15s linear;
-      font-family: 'Vazirmatn', sans-serif;
-    }
+/* دکمه‌ها */
+.btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  background: #0ea5e9;
+  color: white;
+  transition: 0.1s;
+}
 
-    .btn:active {
-      transform: scale(0.97);
-    }
+.btn:active {
+  transform: scale(0.97);
+}
 
-    .option-btn {
-      background: #0ea5e9;
-    }
+.correct-highlight {
+  background: #22c55e !important;
+}
 
-    /* افکت‌های صحیح و غلط */
-    .correct-glow {
-      background: #22c55e !important;
-      box-shadow: 0 0 0 2px #bbf7d0;
-    }
+.wrong-highlight {
+  background: #ef4444 !important;
+  animation: shakeAnim 0.25s ease-in-out 2;
+}
 
-    .wrong-glow {
-      background: #ef4444 !important;
-      animation: shakeBox 0.25s ease-in-out 2;
-    }
+@keyframes shakeAnim {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
 
-    @keyframes shakeBox {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      75% { transform: translateX(6px); }
-      100% { transform: translateX(0); }
-    }
+/* پیام */
+.msg-box {
+  background: #f1f5f9;
+  border-radius: 50px;
+  padding: 12px;
+  margin: 15px 0;
+  min-height: 75px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
-    /* پیام */
-    .msg-area {
-      background: #f8fafc;
-      border-radius: 60px;
-      padding: 14px;
-      margin: 20px 0;
-      min-height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 1.2rem;
-    }
+/* سوال */
+.question-box {
+  background: #f1f5f9;
+  border-radius: 35px;
+  padding: 20px;
+  margin: 15px 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
 
-    /* سوال */
-    .question-card {
-      background: #f1f5f9;
-      border-radius: 40px;
-      padding: 22px 15px;
-      margin: 15px 0;
-      font-weight: 800;
-      font-size: 1.7rem;
-      line-height: 1.4;
-    }
+/* پیشرفت */
+.progress-badge {
+  display: inline-block;
+  background: #e2e8f0;
+  padding: 5px 18px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
 
-    /* پیشرفت */
-    .progress-badge {
-      display: inline-block;
-      background: #e2e8f0;
-      padding: 6px 20px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      margin-bottom: 8px;
-    }
+/* امتیاز */
+.score-panel {
+  background: #f1f5f9;
+  padding: 10px;
+  border-radius: 50px;
+  margin-top: 15px;
+  font-weight: 700;
+}
 
-    /* امتیاز */
-    .score-panel {
-      background: #f1f5f9;
-      border-radius: 50px;
-      padding: 10px;
-      margin-top: 20px;
-      font-weight: 700;
-      font-size: 1.2rem;
-    }
+.score-number {
+  color: #0f766e;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
 
-    .score-number {
-      color: #0f766e;
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-right: 5px;
-    }
+/* مدال */
+.medal-icon {
+  font-size: 80px;
+  margin-bottom: 10px;
+}
 
-    /* مدال */
-    .medal-large {
-      font-size: 85px;
-      margin-bottom: 12px;
-    }
-
-    /* ریسپانسیو */
-    @media (max-width: 550px) {
-      .card {
-        padding: 20px 15px;
-      }
-      .question-card {
-        font-size: 1.3rem;
-        padding: 16px;
-      }
-      .btn {
-        font-size: 1rem;
-        padding: 12px;
-      }
-      .msg-area {
-        font-size: 1rem;
-      }
-      .logo-circle {
-        width: 75px;
-        height: 75px;
-      }
-    }
-  </style>
+@media (max-width: 550px) {
+  .card { padding: 20px; }
+  .question-box { font-size: 1.2rem; padding: 15px; }
+  .btn { font-size: 1rem; padding: 12px; }
+  .title { font-size: 1.6rem; }
+  .dna-icon { font-size: 1.6rem; }
+  .logo-circle { width: 75px; height: 75px; }
+}
+</style>
 </head>
 <body>
 
-<!-- ==================== صفحه شروع ==================== -->
+<!-- ========== صفحه شروع ========== -->
 <div id="startPage" class="card">
-  <div class="logo-wrapper">
-    <div class="logo-circle">
-      <img src="sampad-logo.jpg" alt="سمپاد" onerror="this.parentElement.innerHTML='<span style=\"font-size:55px;\">🎓</span>'">
-    </div>
-    <div class="school-text">🏫 مدرسه فرزانگان ۱ شهریار</div>
+  <div class="logo-circle">
+    <img src="sampad-logo.jpg" alt="سمپاد" onerror="this.parentElement.innerHTML='<span style=\"font-size:50px;\">🎓</span>'">
   </div>
-  <h1>🧬 زیست‌یار</h1>
-  <h2>✨ طراح: خانم معصومه مرتجایی</h2>
-  <p style="margin: 12px 0 8px 0; font-size: 1rem;">شرکت‌کننده گرامی</p>
-  <p style="margin-bottom: 25px; font-size: 0.95rem;">نوع رابطه همزیستی موجودات زیر را مشخص کنید.</p>
-  <button class="btn" id="startGameBtn">🎮 شروع بازی</button>
+  <div class="school-name">🏫 مدرسه فرزانگان ۱ شهریار</div>
+  <div class="title">
+    <span class="dna-icon">🧬</span>
+    <span>زیست‌یار</span>
+  </div>
+  <div class="designer">✨ طراح: خانم معصومه مرتجایی</div>
+  <p style="margin: 15px 0 5px;">شرکت‌کننده گرامی</p>
+  <p style="margin-bottom: 20px; font-size: 0.9rem;">نوع رابطه همزیستی موجودات زیر را مشخص کنید.</p>
+  <button class="btn" id="startBtn">🎮 شروع بازی</button>
 </div>
 
-<!-- ==================== صفحه بازی ==================== -->
+<!-- ========== صفحه بازی ========== -->
 <div id="gamePage" class="card hidden">
-  <div class="progress-badge">📖 سؤال <span id="currentQNumber">1</span> از <span id="totalQCount">10</span></div>
-  <div id="messageBox" class="msg-area"></div>
-  <div id="questionBox" class="question-card"></div>
-  <button class="btn option-btn" id="optHamyar">🤝 همیاری</button>
-  <button class="btn option-btn" id="optHamsafargi">🍽️ همسفرگی</button>
-  <button class="btn option-btn" id="optAngeli">🪱 انگلی</button>
-  <div class="score-panel">⭐ امتیاز: <span id="scoreDisplay" class="score-number">0</span></div>
+  <div class="progress-badge">📖 سوال <span id="qNumber">1</span> از <span id="totalQ">10</span></div>
+  <div id="msgBox" class="msg-box"></div>
+  <div id="questionText" class="question-box"></div>
+  <button class="btn" id="ans1">🤝 همیاری</button>
+  <button class="btn" id="ans2">🍽️ همسفرگی</button>
+  <button class="btn" id="ans3">🪱 انگلی</button>
+  <div class="score-panel">⭐ امتیاز: <span id="scoreValue" class="score-number">0</span></div>
 </div>
 
-<!-- ==================== صفحه پایان ==================== -->
+<!-- ========== صفحه پایان ========== -->
 <div id="endPage" class="card hidden">
-  <div id="medalArea" class="medal-large">🥇</div>
-  <h1>🎉 پایان بازی</h1>
-  <p id="endMessage" style="margin: 18px 0; font-size: 1.1rem;"></p>
-  <button class="btn" id="playAgainBtn">🔄 بازی دوباره</button>
+  <div id="medalIcon" class="medal-icon">🥇</div>
+  <div class="title">🎉 پایان بازی</div>
+  <p id="endMsg" style="margin: 15px 0; font-size: 1rem;"></p>
+  <button class="btn" id="restartBtn">🔄 بازی دوباره</button>
 </div>
 
 <script>
-  (function() {
-    // ---------- سوالات اصلی (با ایموجی) ----------
-    const MASTER_QUESTIONS = [
-      { text: "🐜 مورچه و شته 🐞", answer: "همیاری" },
-      { text: "🐝 زنبور و گل 🌸", answer: "همیاری" },
-      { text: "🦐 میگوی تمیزکننده و کوسه 🦈", answer: "همیاری" },
-      { text: "🍄 گلسنگ (قارچ + جلبک) 🌿", answer: "همیاری" },
-      { text: "🦠 باکتری روده و انسان 👤", answer: "همیاری" },
-      { text: "🦁 شیر و کفتار 🐾", answer: "همسفرگی" },
-      { text: "🐟 ماهی کوچک و کوسه 🦈", answer: "همسفرگی" },
-      { text: "🐢 لاک‌پشت و جلبک 🪸", answer: "همسفرگی" },
-      { text: "🪱 کرمک و انسان 👤", answer: "انگلی" },
-      { text: "🕷️ کنه و گاو 🐄", answer: "انگلی" }
-    ];
+// ========== سوالات ==========
+const allQuestions = [
+  { text: "🐜 مورچه و شته 🐞", answer: "همیاری" },
+  { text: "🐝 زنبور و گل 🌸", answer: "همیاری" },
+  { text: "🦐 میگوی تمیزکننده و کوسه 🦈", answer: "همیاری" },
+  { text: "🍄 گلسنگ (قارچ + جلبک) 🌿", answer: "همیاری" },
+  { text: "🦠 باکتری روده و انسان 👤", answer: "همیاری" },
+  { text: "🦁 شیر و کفتار 🐾", answer: "همسفرگی" },
+  { text: "🐟 ماهی کوچک و کوسه 🦈", answer: "همسفرگی" },
+  { text: "🐢 لاک‌پشت و جلبک 🪸", answer: "همسفرگی" },
+  { text: "🪱 کرمک و انسان 👤", answer: "انگلی" },
+  { text: "🕷️ کنه و گاو 🐄", answer: "انگلی" }
+];
 
-    // پیام‌های تصادفی
-    const CORRECT_PRAISES = ["آفرین ✨", "احسنت 🌟", "عالی بود 🎉"];
-    const WRONG_HINTS  = ["دوباره فکر کن 💭", "دقت کن 🎯", "یک بار دیگر تلاش کن 🔄"];
+// پیام‌ها
+const goodMessages = ["آفرین ✨", "احسنت 🌟", "عالی بود 🎉"];
+const badMessages = ["دوباره فکر کن 💭", "دقت کن 🎯", "یک بار دیگر تلاش کن 🔄"];
 
-    // ---------- متغیرهای وضعیت بازی ----------
-    let shuffledQuestions = [];     // سوالات بعد از شافل
-    let currentQuestionIndex = 0;
-    let totalScore = 0;
-    let isLocked = false;          // برای جلوگیری از کلیک همزمان
-    let alreadyAnswered = false;   // برای جلوگیری از چندبار امتیاز
+// متغیرهای بازی
+let shuffledQuestions = [];
+let currentIndex = 0;
+let currentScore = 0;
+let isLocked = false;
 
-    // ---------- ابزار کمکی: تصادفی کردن آرایه (Fisher-Yates) ----------
-    function shuffleArray(arr) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
+// تصادفی کردن
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
-    // ---------- تولید کانفتی (شادباش برای پاسخ صحیح) ----------
-    function burstConfetti() {
-      const emojis = ["🎉", "✨", "🌟", "⭐", "🎊"];
-      for (let i = 0; i < 45; i++) {
-        const piece = document.createElement("div");
-        piece.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-        piece.style.position = "fixed";
-        piece.style.left = Math.random() * 100 + "%";
-        piece.style.top = "-40px";
-        piece.style.fontSize = (18 + Math.random() * 14) + "px";
-        piece.style.pointerEvents = "none";
-        piece.style.zIndex = "9999";
-        piece.style.opacity = "0.9";
-        piece.style.transition = "all 2s ease-out";
-        document.body.appendChild(piece);
-        
-        // حرکت به پایین و محو شدن
-        requestAnimationFrame(() => {
-          piece.style.transform = `translateY(${window.innerHeight + 50}px) rotate(${Math.random() * 360}deg)`;
-          piece.style.opacity = "0";
-        });
-        
-        setTimeout(() => piece.remove(), 2100);
-      }
-    }
+// نمایش کانفتی ساده
+function showConfetti() {
+  const emojis = ["🎉", "✨", "🌟", "⭐"];
+  for (let i = 0; i < 35; i++) {
+    const el = document.createElement("div");
+    el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.position = "fixed";
+    el.style.left = Math.random() * 100 + "%";
+    el.style.top = "-30px";
+    el.style.fontSize = (16 + Math.random() * 14) + "px";
+    el.style.pointerEvents = "none";
+    el.style.zIndex = "9999";
+    el.style.transition = "all 2s ease-out";
+    document.body.appendChild(el);
+    requestAnimationFrame(() => {
+      el.style.transform = `translateY(${window.innerHeight + 50}px) rotate(${Math.random() * 360}deg)`;
+      el.style.opacity = "0";
+    });
+    setTimeout(() => el.remove(), 2000);
+  }
+}
 
-    // ---------- بروزرسانی سوال فعلی در صفحه ----------
-    function renderCurrentQuestion() {
-      if (currentQuestionIndex >= shuffledQuestions.length) {
-        finishGame();
-        return;
-      }
+// نمایش سوال فعلی
+function showCurrentQuestion() {
+  if (currentIndex >= shuffledQuestions.length) {
+    endGame();
+    return;
+  }
+  
+  document.getElementById("qNumber").innerText = currentIndex + 1;
+  document.getElementById("questionText").innerHTML = shuffledQuestions[currentIndex].text;
+  
+  const msgDiv = document.getElementById("msgBox");
+  msgDiv.innerHTML = "";
+  msgDiv.style.background = "#f1f5f9";
+  msgDiv.style.color = "#1e293b";
+  
+  // فعال کردن دکمه‌ها
+  const btns = ["ans1", "ans2", "ans3"];
+  btns.forEach(id => {
+    const btn = document.getElementById(id);
+    btn.disabled = false;
+    btn.classList.remove("correct-highlight", "wrong-highlight");
+  });
+  
+  isLocked = false;
+}
 
-      // نمایش شماره سوال
-      document.getElementById("currentQNumber").innerText = currentQuestionIndex + 1;
-      // نمایش متن سوال
-      document.getElementById("questionBox").innerHTML = shuffledQuestions[currentQuestionIndex].text;
-      
-      // پاک کردن پیام قبلی
-      const msgDiv = document.getElementById("messageBox");
-      msgDiv.innerHTML = "";
-      msgDiv.style.background = "#f8fafc";
-      msgDiv.style.color = "#1e293b";
-      
-      // فعال کردن دکمه‌ها و حذف افکت‌های اضافه
-      const allBtns = ["optHamyar", "optHamsafargi", "optAngeli"];
-      allBtns.forEach(btnId => {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-          btn.disabled = false;
-          btn.classList.remove("correct-glow", "wrong-glow");
-        }
-      });
-      
-      isLocked = false;
-      alreadyAnswered = false;
-    }
-
-    // ---------- مدیریت پاسخ کاربر ----------
-    function onUserAnswer(selectedChoice, btnElement) {
-      // جلوگیری از کلیک چندباره در حین پردازش
-      if (isLocked || alreadyAnswered) return;
-      if (!shuffledQuestions[currentQuestionIndex]) return;
-      
-      const correctAns = shuffledQuestions[currentQuestionIndex].answer;
-      const msgBox = document.getElementById("messageBox");
-      
-      // قفل کردن تا پایان عملیات
-      isLocked = true;
-      alreadyAnswered = true;
-      
-      // غیرفعال کردن موقت دکمه‌ها برای جلوگیری از تداخل
-      const btns = ["optHamyar", "optHamsafargi", "optAngeli"];
-      btns.forEach(id => {
-        const b = document.getElementById(id);
-        if (b) b.disabled = true;
-      });
-      
-      // --- پاسخ صحیح ---
-      if (selectedChoice === correctAns) {
-        // افزایش امتیاز
-        totalScore++;
-        document.getElementById("scoreDisplay").innerText = totalScore;
-        
-        // نمایش پیام تشویقی تصادفی
-        const randomMsg = CORRECT_PRAISES[Math.floor(Math.random() * CORRECT_PRAISES.length)];
-        msgBox.innerHTML = `✅ ${randomMsg}`;
-        msgBox.style.background = "#dcfce7";
-        msgBox.style.color = "#166534";
-        
-        // افکت سبز روی دکمه
-        btnElement.classList.add("correct-glow");
-        
-        // انیمیشن شادباش (کانفتی)
-        burstConfetti();
-        
-        // بعد از یک ثانیه رفتن به سوال بعدی
-        setTimeout(() => {
-          // حذف افکت سبز
-          btnElement.classList.remove("correct-glow");
-          // سوال بعدی
-          currentQuestionIndex++;
-          renderCurrentQuestion();
-        }, 1000);
-      } 
-      // --- پاسخ اشتباه (امتیاز کم نمی‌شود، فقط راهنمایی) ---
-      else {
-        const randomHint = WRONG_HINTS[Math.floor(Math.random() * WRONG_HINTS.length)];
-        msgBox.innerHTML = `❌ ${randomHint}<br>📖 دوباره تلاش کن!`;
-        msgBox.style.background = "#fee2e2";
-        msgBox.style.color = "#991b1b";
-        
-        btnElement.classList.add("wrong-glow");
-        
-        // بعد از یک ثانیه، دکمه‌ها را دوباره فعال می‌کنیم تا کاربر دوباره تلاش کند
-        setTimeout(() => {
-          btnElement.classList.remove("wrong-glow");
-          
-          // فعال کردن مجدد دکمه‌ها
-          const allBtns = ["optHamyar", "optHamsafargi", "optAngeli"];
-          allBtns.forEach(id => {
-            const b = document.getElementById(id);
-            if (b) b.disabled = false;
-          });
-          
-          // قفل را برمی‌داریم تا پاسخ جدید ثبت شود
-          isLocked = false;
-          alreadyAnswered = false;
-          
-          // بعد از 1.5 ثانیه پیام خطا را پاک می‌کنیم (اختیاری)
-          setTimeout(() => {
-            if (msgBox.innerHTML.includes("❌")) {
-              msgBox.innerHTML = "";
-              msgBox.style.background = "#f8fafc";
-              msgBox.style.color = "#1e293b";
-            }
-          }, 1200);
-        }, 1000);
-      }
-    }
-
-    // ---------- پایان بازی و نمایش مدال ----------
-    function finishGame() {
-      // مخفی کردن صفحه بازی و نمایش صفحه پایان
-      document.getElementById("gamePage").classList.add("hidden");
-      document.getElementById("endPage").classList.remove("hidden");
-      
-      const total = shuffledQuestions.length;
-      let medal = "🥉";
-      let encouragementText = "";
-      
-      if (totalScore === 10) {
-        medal = "🥇";
-        encouragementText = "🎉🌟 آفرین! درس را عالی یاد گرفتی! 🌟🎉";
-      } else if (totalScore >= 8) {
-        medal = "🥈";
-        encouragementText = "👏 خیلی خوب! دانشت عالی است! 👏";
-      } else if (totalScore >= 5) {
-        medal = "🥉";
-        encouragementText = "👍 خوب بود! می‌توانی بهتر هم شوی! 👍";
-      } else {
-        medal = "🥉";
-        encouragementText = "💪 آفرین! بیشتر تلاش کن تا مطالب در یادت بماند! 💪";
-      }
-      
-      document.getElementById("medalArea").innerHTML = medal;
-      document.getElementById("endMessage").innerHTML = `🌟 امتیاز شما: ${totalScore} از ${total}<br><br>${encouragementText}`;
-    }
-
-    // ---------- شروع بازی (ساخت سوالات تصادفی و ریست متغیرها) ----------
-    function setupAndStart() {
-      // کپی عمیق و تصادفی کردن سوالات
-      shuffledQuestions = shuffleArray([...MASTER_QUESTIONS]);
-      currentQuestionIndex = 0;
-      totalScore = 0;
-      isLocked = false;
-      alreadyAnswered = false;
-      
-      // بروزرسانی صفحه بازی
-      document.getElementById("scoreDisplay").innerText = "0";
-      document.getElementById("totalQCount").innerText = shuffledQuestions.length;
-      
-      // نمایش صفحه بازی و مخفی کردن صفحه شروع و پایان
-      document.getElementById("startPage").classList.add("hidden");
-      document.getElementById("endPage").classList.add("hidden");
-      document.getElementById("gamePage").classList.remove("hidden");
-      
-      renderCurrentQuestion();
-    }
-
-    // ---------- راه‌اندازی مجدد بازی (از صفحه پایان) ----------
-    function restartGame() {
-      setupAndStart();
-    }
-
-    // ---------- اتصال رویدادها به دکمه‌ها ----------
-    function bindEvents() {
-      const startBtn = document.getElementById("startGameBtn");
-      if (startBtn) startBtn.addEventListener("click", setupAndStart);
-      
-      const replayBtn = document.getElementById("playAgainBtn");
-      if (replayBtn) replayBtn.addEventListener("click", restartGame);
-      
-      // دکمه‌های پاسخ
-      const hamyarBtn = document.getElementById("optHamyar");
-      const hamsafargiBtn = document.getElementById("optHamsafargi");
-      const angeliBtn = document.getElementById("optAngeli");
-      
-      if (hamyarBtn) {
-        hamyarBtn.addEventListener("click", () => onUserAnswer("همیاری", hamyarBtn));
-      }
-      if (hamsafargiBtn) {
-        hamsafargiBtn.addEventListener("click", () => onUserAnswer("همسفرگی", hamsafargiBtn));
-      }
-      if (angeliBtn) {
-        angeliBtn.addEventListener("click", () => onUserAnswer("انگلی", angeliBtn));
-      }
-    }
+// پاسخ دادن
+function onAnswer(selected, btnElement) {
+  if (isLocked) return;
+  
+  const correct = shuffledQuestions[currentIndex].answer;
+  const msgDiv = document.getElementById("msgBox");
+  
+  isLocked = true;
+  
+  // غیرفعال کردن دکمه‌ها
+  const btns = ["ans1", "ans2", "ans3"];
+  btns.forEach(id => { document.getElementById(id).disabled = true; });
+  
+  if (selected === correct) {
+    // پاسخ صحیح
+    currentScore++;
+    document.getElementById("scoreValue").innerText = currentScore;
     
-    // اجرای اتصال رویدادها بعد از بارگذاری کامل صفحه
-    window.addEventListener("DOMContentLoaded", bindEvents);
-  })();
+    const goodMsg = goodMessages[Math.floor(Math.random() * goodMessages.length)];
+    msgDiv.innerHTML = `✅ ${goodMsg}`;
+    msgDiv.style.background = "#dcfce7";
+    msgDiv.style.color = "#166534";
+    
+    btnElement.classList.add("correct-highlight");
+    showConfetti();
+    
+    setTimeout(() => {
+      btnElement.classList.remove("correct-highlight");
+      currentIndex++;
+      showCurrentQuestion();
+    }, 900);
+    
+  } else {
+    // پاسخ اشتباه - امتیاز کم نمی‌شود
+    const badMsg = badMessages[Math.floor(Math.random() * badMessages.length)];
+    msgDiv.innerHTML = `❌ ${badMsg}<br>📖 دوباره تلاش کن!`;
+    msgDiv.style.background = "#fee2e2";
+    msgDiv.style.color = "#991b1b";
+    
+    btnElement.classList.add("wrong-highlight");
+    
+    setTimeout(() => {
+      btnElement.classList.remove("wrong-highlight");
+      
+      // فعال کردن مجدد دکمه‌ها
+      btns.forEach(id => { document.getElementById(id).disabled = false; });
+      isLocked = false;
+      
+      // پاک کردن پیام بعد از 1.5 ثانیه
+      setTimeout(() => {
+        if (msgDiv.innerHTML.includes("❌")) {
+          msgDiv.innerHTML = "";
+          msgDiv.style.background = "#f1f5f9";
+        }
+      }, 1300);
+    }, 900);
+  }
+}
+
+// پایان بازی
+function endGame() {
+  document.getElementById("gamePage").classList.add("hidden");
+  document.getElementById("endPage").classList.remove("hidden");
+  
+  const total = shuffledQuestions.length;
+  let medal = "🥉";
+  let message = "";
+  
+  if (currentScore === 10) {
+    medal = "🥇";
+    message = "🎉🌟 آفرین! درس را عالی یاد گرفتی! 🌟🎉";
+  } else if (currentScore >= 8) {
+    medal = "🥈";
+    message = "👏 خیلی خوب! دانشت عالی است! 👏";
+  } else if (currentScore >= 5) {
+    medal = "🥉";
+    message = "👍 خوب بود! می‌توانی بهتر هم شوی! 👍";
+  } else {
+    medal = "🥉";
+    message = "💪 آفرین! بیشتر تلاش کن تا مطالب در یادت بماند! 💪";
+  }
+  
+  document.getElementById("medalIcon").innerHTML = medal;
+  document.getElementById("endMsg").innerHTML = `🌟 امتیاز شما: ${currentScore} از ${total}<br><br>${message}`;
+}
+
+// شروع بازی
+function startGame() {
+  shuffledQuestions = shuffleArray([...allQuestions]);
+  currentIndex = 0;
+  currentScore = 0;
+  isLocked = false;
+  
+  document.getElementById("scoreValue").innerText = "0";
+  document.getElementById("totalQ").innerText = shuffledQuestions.length;
+  
+  document.getElementById("startPage").classList.add("hidden");
+  document.getElementById("endPage").classList.add("hidden");
+  document.getElementById("gamePage").classList.remove("hidden");
+  
+  showCurrentQuestion();
+}
+
+// اتصال رویدادها
+document.getElementById("startBtn").addEventListener("click", startGame);
+document.getElementById("restartBtn").addEventListener("click", startGame);
+document.getElementById("ans1").addEventListener("click", () => onAnswer("همیاری", document.getElementById("ans1")));
+document.getElementById("ans2").addEventListener("click", () => onAnswer("همسفرگی", document.getElementById("ans2")));
+document.getElementById("ans3").addEventListener("click", () => onAnswer("انگلی", document.getElementById("ans3")));
 </script>
 </body>
 </html>
-```
-
